@@ -1,10 +1,10 @@
 // ﷽
-// Contest: Codeforces Round 927 (Div. 3)
+// Contest: Codeforces Round 937 (Div. 4)
 // Judge: Codeforces
-// URL: https://codeforces.com/problemset/problem/1932/B
+// URL: https://codeforces.com/contest/1950/problem/D
 // Memory Limit: 256
-// Time Limit: 2000
-// Start: Sun 31 Mar 2024 06:07:45 PM EET
+// Time Limit: 3000
+// Start: Sat 30 Mar 2024 07:28:53 AM EET
 //
 #include <bits/stdc++.h>
 using namespace std;
@@ -44,16 +44,22 @@ ostream &operator<<(ostream &output, const vector<T> &data) {
 // 48-57 -> 0-9  65-90 -> A-Z 97-122 -> a-z
 
 void solve() {
-
-  int n, a, c = 0;
+  int n;
   cin >> n;
-  for (int i = 0; i < n; ++i) {
-    cin >> a;
-    c += a;
-    c -= (c % a);
-    debug(c);
+  ll cnt = 0;
+
+  for (int i = 31; i >= 2; i--) {
+    cnt++;
+    bitset<5> bit(i);
+    string s = bit.to_string();
+    int x = stoi(s);
+
+    while (n % x == 0) {
+      n /= x;
+    }
   }
-  cout << c << endl;
+
+  cout << (n == 1 ? "YES" : "NO") << endl;
 }
 int32_t main() {
 

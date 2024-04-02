@@ -1,10 +1,10 @@
 // ﷽
-// Contest: Codeforces Round 927 (Div. 3)
+// Contest: CodeTON Round 8 (Div. 1 + Div. 2, Rated, Prizes!)
 // Judge: Codeforces
-// URL: https://codeforces.com/problemset/problem/1932/B
+// URL: https://codeforces.com/contest/1942/problem/B
 // Memory Limit: 256
-// Time Limit: 2000
-// Start: Sun 31 Mar 2024 06:07:45 PM EET
+// Time Limit: 1500
+// Start: Sun 31 Mar 2024 03:40:56 PM EET
 //
 #include <bits/stdc++.h>
 using namespace std;
@@ -44,16 +44,19 @@ ostream &operator<<(ostream &output, const vector<T> &data) {
 // 48-57 -> 0-9  65-90 -> A-Z 97-122 -> a-z
 
 void solve() {
-
-  int n, a, c = 0;
+  int n;
   cin >> n;
-  for (int i = 0; i < n; ++i) {
-    cin >> a;
-    c += a;
-    c -= (c % a);
-    debug(c);
+  vi arr(n);
+  cin >> arr;
+  vi per(n);
+  int mex = n;
+  for (int i = n - 1; i >= 0; --i) {
+    per[i] = mex - arr[i];
+    debug(per[i]);
+    mex = min(mex, per[i]);
   }
-  cout << c << endl;
+  for (int i = 0; i < n; ++i)
+    cout << per[i] << " \n"[i == n - 1];
 }
 int32_t main() {
 

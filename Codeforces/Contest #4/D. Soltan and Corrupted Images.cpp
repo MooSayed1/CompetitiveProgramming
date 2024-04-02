@@ -46,21 +46,25 @@ ostream &operator<<(ostream &output, const vector<T> &data) {
 void solve() {
   int r, c;
   cin >> r >> c;
-  char arr[r][c];
+  vector<string> arr(r);
+  for (int i = 0; i < r; ++i)
+    cin >> arr[i];
   int cntzr = 0, cnt = 0;
   for (int i = 0; i < r; ++i) {
-    for (int j = 0; j < c; ++j) {
-      if (i == 0 || i == r - 1 || j == 0 || j == c - 1)
-        cntzr += !(arr[i][j] == 0);
-      else
-        cnt += (arr[i][j] == 1);
+    for (int j = 0; j < arr[i].size(); ++j) {
+      if (i == 0 || i == r - 1 || j == 0 || j == c - 1) {
+        cntzr += (arr[i][j] == '0');
+      } else
+        cnt += (arr[i][j] == '1');
     }
   }
+  debug(cntzr, cnt);
   if (cntzr <= cnt)
     cout << cntzr << endl;
   else
     cout << -1 << endl;
 }
+
 int32_t main() {
 
   //  freopen("whereami.in", "r", stdin);

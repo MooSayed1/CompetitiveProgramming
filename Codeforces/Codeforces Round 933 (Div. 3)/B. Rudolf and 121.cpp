@@ -42,15 +42,33 @@ ostream &operator<<(ostream &output, const vector<T> &data) {
   return output;
 }
 // 48-57 -> 0-9  65-90 -> A-Z 97-122 -> a-z
-
+bool isZeros(vi arr) {
+  for (auto &it : arr) {
+    if (it != 0)
+      return false;
+  }
+  return true;
+}
+const int N = 1e6;
 void solve() {
   int n;
   cin >> n;
-  int cnt = 0;
   vi arr(n);
-  for (int i = 0; i < n; ++i) {
-    cin >> arr[i];
+  cin >> arr;
+  for (int i = 1; i < n - 1; ++i) {
+
+    arr[i] -= arr[i - 1] * 2;
+    arr[i + 1] -= arr[i - 1];
+    arr[i - 1] -= arr[i - 1];
+    if (arr[i] < 0 || arr[i + 1] < 0) {
+      no;
+      return;
+    }
   }
+  if (isZeros(arr))
+    yes;
+  else
+    no;
 }
 int32_t main() {
 

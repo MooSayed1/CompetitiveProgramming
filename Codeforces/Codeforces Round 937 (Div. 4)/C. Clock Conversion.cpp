@@ -1,12 +1,14 @@
 // ﷽
-// Contest: Codeforces Round 927 (Div. 3)
+// Contest: Codeforces Round 937 (Div. 4)
 // Judge: Codeforces
-// URL: https://codeforces.com/problemset/problem/1932/B
+// URL: https://codeforces.com/contest/1950/problem/C
 // Memory Limit: 256
-// Time Limit: 2000
-// Start: Sun 31 Mar 2024 06:07:45 PM EET
+// Time Limit: 1000
+// Start: Sat 30 Mar 2024 07:06:49 AM EET
 //
 #include <bits/stdc++.h>
+#include <cstdio>
+#include <string>
 using namespace std;
 #ifdef MOHAMED
 #include "debug.hpp"
@@ -44,16 +46,30 @@ ostream &operator<<(ostream &output, const vector<T> &data) {
 // 48-57 -> 0-9  65-90 -> A-Z 97-122 -> a-z
 
 void solve() {
+  string s;
+  getline(cin, s, ':');
+  string minute;
+  getline(cin, minute);
+  int hour = stoi(s);
+  s.clear();
+  string period = (hour < 12) ? "AM" : "PM";
 
-  int n, a, c = 0;
-  cin >> n;
-  for (int i = 0; i < n; ++i) {
-    cin >> a;
-    c += a;
-    c -= (c % a);
-    debug(c);
+  if (hour == 0) {
+    hour = 12;
+  } else if (hour > 12) {
+    hour -= 12;
   }
-  cout << c << endl;
+  s = to_string(hour);
+  if (s.size() == 1) {
+    char temp = s[0];
+    debug(s[0]);
+    s.clear();
+    s.push_back('0');
+    s.push_back(temp);
+    debug(s);
+  }
+
+  cout << s  << ':' << minute << " " << period << endl;
 }
 int32_t main() {
 

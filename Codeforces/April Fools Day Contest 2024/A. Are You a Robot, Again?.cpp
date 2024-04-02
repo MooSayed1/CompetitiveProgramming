@@ -1,10 +1,10 @@
 // ﷽
-// Contest: Codeforces Round 927 (Div. 3)
+// Contest: April Fools Day Contest 2024
 // Judge: Codeforces
-// URL: https://codeforces.com/problemset/problem/1932/B
+// URL: https://codeforces.com/contest/1952/problem/0
 // Memory Limit: 256
-// Time Limit: 2000
-// Start: Sun 31 Mar 2024 06:07:45 PM EET
+// Time Limit: 1000
+// Start: Mon 01 Apr 2024 04:39:32 PM EET
 //
 #include <bits/stdc++.h>
 using namespace std;
@@ -43,25 +43,14 @@ ostream &operator<<(ostream &output, const vector<T> &data) {
 }
 // 48-57 -> 0-9  65-90 -> A-Z 97-122 -> a-z
 
-void solve() {
-
-  int n, a, c = 0;
-  cin >> n;
-  for (int i = 0; i < n; ++i) {
-    cin >> a;
-    c += a;
-    c -= (c % a);
-    debug(c);
-  }
-  cout << c << endl;
-}
+void solve() { cout << "safety" << endl; }
 int32_t main() {
 
   //  freopen("whereami.in", "r", stdin);
   //  freopen("whereami.out", "w", stdout);
   fastio();
   int t = 1;
-  cin >> t;
+  // cin>>t;
   while (t--)
     solve();
   return 0;
