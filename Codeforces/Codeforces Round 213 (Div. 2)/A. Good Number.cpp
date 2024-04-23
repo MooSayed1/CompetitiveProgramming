@@ -1,16 +1,24 @@
 // ﷽
 // Contest: Codeforces Round 213 (Div. 2)
 // Judge: Codeforces
-// URL: https://codeforces.com/problemset/problem/365/A
+// URL: https://codeforces.com/contest/365/problem/A
 // Memory Limit: 256
 // Time Limit: 1000
-// Start: Tue 06 Feb 2024 01:21:31 PM EET
+// Start: Tue 16 Apr 2024 05:20:04 PM EET
 //
 #include <bits/stdc++.h>
 using namespace std;
+#ifdef MOHAMED
+#include "debug.hpp"
+#else
+#define debug(...) 0
+#define debug_itr(...) 0
+#define debug_bits(...) 0
+#endif
 #define fastio()                                                               \
   ios_base::sync_with_stdio(false);                                            \
   cin.tie(NULL);
+
 #define ll long long
 #define all(a) (a).begin(), (a).end()
 #define sz(a) (int)(a).size()
@@ -36,19 +44,31 @@ ostream &operator<<(ostream &output, const vector<T> &data) {
 // 48-57 -> 0-9  65-90 -> A-Z 97-122 -> a-z
 
 void solve() {
-  int n, k, cnt = 0;
+  ll n, k;
   cin >> n >> k;
-  bitset<10> b;
-  int x = 0;
-  for (int i = 0; i < k + 1; ++i)
-    x = (x << 1) | 1;
-
+  int cnt = 0;
+  string s;
   while (n--) {
-    string s;
     cin >> s;
-    for (int i = 0; i < s.size(); ++i)
-      b[s[i] - '0'] = 1;
-    if (x == b.to_ullong())
+    set<int> ss;
+    for (int i = 0; i < s.size(); ++i) {
+      ss.insert(s[i] - '0');
+    }
+    s.clear();
+    auto it = ss.begin();
+    for (; it != ss.end(); ++it) {
+      s.push_back(*it + '0');
+    }
+
+    debug(s);
+    bool flag = 1;
+    for (int i = 0; i <= k; ++i) {
+      if (i != (s[i] - '0')) {
+        flag = 0;
+        break;
+      }
+    }
+    if (flag)
       cnt++;
   }
   cout << cnt << endl;
