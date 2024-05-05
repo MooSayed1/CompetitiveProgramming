@@ -24,6 +24,7 @@ void bubbleSort(vector<int>& data) {
     }
 }
 int main() {
+    cout<< " Ebter The Size " <<endl;
     cout<<"enter the size : ";
     int size;cin>>size;
     vector<int> data(size);

@@ -1,1 +1,5 @@
 # ProblemSolving
+
+
+## Notes i get 
+
