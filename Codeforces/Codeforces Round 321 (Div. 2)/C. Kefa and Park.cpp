@@ -7,6 +7,7 @@
 // Start: Thu 25 Apr 2024 09:40:06 PM EET
 //
 #include <bits/stdc++.h>
+#include <vector>
 using namespace std;
 #ifdef MOHAMED
 #include "debug.hpp"
@@ -27,6 +28,7 @@ using namespace std;
 #define no cout << "NO\n"
 #define vll vector<ll>
 #define vi vector<int>
+#define OO 1e8
 #define endl "\n"
 
 template <typename T> istream &operator>>(istream &input, vector<T> &data) {
@@ -42,10 +44,53 @@ ostream &operator<<(ostream &output, const vector<T> &data) {
   return output;
 }
 // 48-57 -> 0-9  65-90 -> A-Z 97-122 -> a-z
+vector<vi> adj;
+vi visited;
+queue<int> q;
+int n, m;
+vi bfs(int src, vector<vi> &adj) {
+  vi distance(adj.size(), OO);
+  distance[src] = visited[src];
+  q.push(src);
+  while (!q.empty()) {
+    int cur = q.front();
+    q.pop();
+    // process node s
+    debug(visited);
+    for (auto u : adj[cur]) {
+      if (distance[u] == OO) {
+        if (distance[cur] >= 1 && visited[u] == 1) {
+          distance[u] = distance[cur] + visited[u];
+          if (distance[u] > m)
+            continue;
+        } else
+          distance[u] = visited[u];
+        q.push(u);
+      }
+    }
+  }
+  return distance;
+}
 
 void solve() {
-  int n, m;
   cin >> n >> m;
+  adj.resize(n);
+  visited.resize(n);
+  cin >> visited;
+  int a, b;
+  while (cin >> a >> b) {
+    --a, --b;
+    adj[a].pb(b);
+    adj[b].pb(a);
+  }
+  vi res = bfs(0, adj);
+  int cnt = 0;
+  for (int i = 1; i <= n; ++i) {
+    if (res[i] <= m && adj[i].size() == 1)
+      ++cnt;
+  }
+  cout << cnt << endl;
+  debug(res);
 }
 int32_t main() {
 

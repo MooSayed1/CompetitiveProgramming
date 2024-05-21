@@ -15,8 +15,8 @@ using namespace std;
 #define debug_itr(...) 0
 #define debug_bits(...) 0
 #endif
-#define fastio()                                                               \
-  ios_base::sync_with_stdio(false);                                            \
+#define fastio()                    \
+  ios_base::sync_with_stdio(false); \
   cin.tie(NULL);
 
 #define ll long long
@@ -29,31 +29,26 @@ using namespace std;
 #define vi vector<int>
 #define endl "\n"
 
-template <typename T> istream &operator>>(istream &input, vector<T> &data) {
-  for (T &x : data)
-    input >> x;
+template <typename T>
+istream &operator>>(istream &input, vector<T> &data) {
+  for (T &x : data) input >> x;
   return input;
 }
 template <typename T>
 ostream &operator<<(ostream &output, const vector<T> &data) {
-
-  for (const T &x : data)
-    output << x << " ";
+  for (const T &x : data) output << x << " ";
   return output;
 }
 // 48-57 -> 0-9  65-90 -> A-Z 97-122 -> a-z
 
 void solve() {
-
 }
 int32_t main() {
-
   //  freopen("whereami.in", "r", stdin);
   //  freopen("whereami.out", "w", stdout);
   fastio();
   int t = 1;
   // cin>>t;
-  while (t--)
-    solve();
+  while (t--) solve();
   return 0;
 }

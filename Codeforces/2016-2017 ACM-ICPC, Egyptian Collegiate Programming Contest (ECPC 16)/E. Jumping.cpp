@@ -39,58 +39,63 @@ ostream &operator<<(ostream &output, const vector<T> &data) {
   return output;
 }
 // 48-57 -> 0-9  65-90 -> A-Z 97-122 -> a-z
-int n;
-vector<vi> nodes;
-vi visited;
-// int cnt = 0;
-bool dfs(int node, int &cnt) {
-  visited[node] = true;
-  for (auto &it : nodes[node]) {
-    if (it == n)
-      return true;
-    ++cnt;
-    if (!visited[it]) {
-      debug(cnt);
-      return dfs(it, cnt);
+#define OO 1e8
+vector<vi> adj, emptyAdj;
+
+vi bfs(int src, vector<vi> &adj) {
+  queue<int> q;
+  vi distance(adj.size(), OO);
+  distance[src] = 0;
+  q.push(src);
+  while (!q.empty()) {
+    int cur = q.front();
+    q.pop();
+    for (auto &it : adj[cur]) {
+      if (distance[it] == OO) {
+        distance[it] = distance[cur] + 1;
+        q.push(it);
+      }
     }
   }
-  return false;
-}
-bool find(int node, int &cnt) {
-  for (auto &it : nodes[node]) {
-    if (it == n - 1)
-      return true;
-    ++cnt;
-  }
-  return false;
+  return distance;
 }
 void solve() {
+  int n;
   cin >> n;
-  nodes.resize(n);
-  visited.resize(n);
-  int cnt = 0;
-  vi arr(n);
-  cin >> arr;
-  for (int i = 0; i + arr[i] <= n - 1; ++i) {
-    nodes[i].push_back(i + arr[i]);
-    nodes[i + arr[i]].push_back(i);
-  }
+
+  adj.resize(n);
+  emptyAdj.resize(n);
   for (int i = 0; i < n; ++i) {
-    cnt = 0;
-    if (find(i, cnt)) {
-      cout << cnt << endl;
-    } else
+    int d;
+    cin >> d;
+    int nxt = i + d;
+    int pre = i - d;
+    if (nxt < n) {
+      adj[nxt].pb(i);
+    }
+    if (pre >= 0)
+      adj[pre].pb(i);
+  }
+  vi res = bfs(n - 1, adj);
+  int cnt = 0;
+  for (int i = 0; i < n; ++i) {
+    if (res[i] != OO)
+      cout << res[i] << endl;
+    else
       cout << -1 << endl;
   }
+  debug(res);
 }
 int32_t main() {
 
-  // freopen("jumping.in", "r", stdin);
+  freopen("jumping.in", "r", stdin);
   // freopen("output.txt", "w", stdout);
   fastio();
   int t = 1;
   cin >> t;
-  while (t--)
+  while (t--) {
     solve();
+    adj = emptyAdj;
+  }
   return 0;
 }
