@@ -1,12 +1,16 @@
 // ﷽
-// Contest: Codeforces Round 948 (Div. 2)
+// Contest: Educational Codeforces Round 166 (Rated for Div. 2)
 // Judge: Codeforces
-// URL: https://codeforces.com/contest/1977/problem/B
+// URL: https://codeforces.com/contest/1976/problem/B
 // Memory Limit: 256
-// Time Limit: 1000
-// Start: Sun 26 May 2024 05:40:19 PM EEST
+// Time Limit: 2000
+// Start: Thu 30 May 2024 05:58:53 PM EEST
 //
 #include <bits/stdc++.h>
+
+#include <algorithm>
+#include <climits>
+#include <deque>
 using namespace std;
 #ifdef MOHAMED
 #include "debug.hpp"
@@ -43,30 +47,26 @@ ostream &operator<<(ostream &output, const vector<T> &data) {
 // 48-57 -> 0-9  65-90 -> A-Z 97-122 -> a-z
 
 void solve() {
-  ll x;
-  cin >> x;
-  vi res;
-
-  while (x != 0) {
-    if (x & 1 ^ 1) {
-      res.push_back(0);
-    } else {
-      if (x % 4 == 1) {  // يارب
-        res.push_back(1);
-        x--;
-      } else {
-        res.push_back(-1);
-        x++;
-      }
+  int n;
+  cin >> n;
+  vi arr(n);
+  vi brr(n + 1);
+  cin >> arr >> brr;
+  ll ans = 0;
+  ll mini = INT_MAX;
+  bool f = 0;
+  for (int i = 0; i < n; ++i) {
+    ans += abs(arr[i] - brr[i]);
+    ll temp = abs(brr[n] - arr[i]);
+    if (!f) mini = min({mini, temp, 1LL*abs(brr[i] - brr[n])});
+    if (brr[n] >= min(arr[i], brr[i]) && brr[n] <= max(arr[i], brr[i])) {
+      mini = 0;
+      f = 1;
     }
-    x >>= 1;
   }
 
-  cout << res.size() << endl;
-  for (int i = 0; i < res.size(); ++i) {
-    cout << res[i] << " ";
-  }
-  cout << endl;
+  ans += mini + 1;
+  cout << ans << endl;
 }
 int32_t main() {
   //  freopen("whereami.in", "r", stdin);

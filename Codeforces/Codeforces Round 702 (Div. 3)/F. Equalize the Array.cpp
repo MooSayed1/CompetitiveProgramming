@@ -1,12 +1,14 @@
 // ﷽
-// Contest: Codeforces Round 948 (Div. 2)
+// Contest: Codeforces Round 702 (Div. 3)
 // Judge: Codeforces
-// URL: https://codeforces.com/contest/1977/problem/B
+// URL: https://codeforces.com/contest/1490/problem/F
 // Memory Limit: 256
-// Time Limit: 1000
-// Start: Sun 26 May 2024 05:40:19 PM EEST
+// Time Limit: 2000
+// Start: Sat 01 Jun 2024 04:05:52 PM EEST
 //
 #include <bits/stdc++.h>
+
+#include <functional>
 using namespace std;
 #ifdef MOHAMED
 #include "debug.hpp"
@@ -41,33 +43,41 @@ ostream &operator<<(ostream &output, const vector<T> &data) {
   return output;
 }
 // 48-57 -> 0-9  65-90 -> A-Z 97-122 -> a-z
-
-void solve() {
-  ll x;
-  cin >> x;
-  vi res;
-
-  while (x != 0) {
-    if (x & 1 ^ 1) {
-      res.push_back(0);
-    } else {
-      if (x % 4 == 1) {  // يارب
-        res.push_back(1);
-        x--;
-      } else {
-        res.push_back(-1);
-        x++;
-      }
-    }
-    x >>= 1;
-  }
-
-  cout << res.size() << endl;
-  for (int i = 0; i < res.size(); ++i) {
-    cout << res[i] << " ";
-  }
-  cout << endl;
+bool com(pair<int, int> p1, pair<int, int> p2) {
+  if (p1.second < p2.second) return true;
+  if (p1.first < p2.first) return true;
+  return false;
 }
+void solve() {
+  
+  int n;
+  cin >> n;
+  map<int, int> freq;
+  for (int i = 0; i < n; ++i) {
+    int x;
+    cin >> x;
+    ++freq[x];
+  }
+
+  vi cnt(n + 1);
+  for (auto&it : freq) {
+    cnt[it.second]++;
+  }
+
+  vi frq;
+  for (int i= 0; i<= n; ++i) {
+    for (int j = 0; j < cnt[i]; ++j) {
+      frq.emplace_back(i);
+    }
+  }
+
+  ll saved = 0;
+  for (int i = 0; i < (int)frq.size(); ++i) {
+    saved = max(saved, (ll)frq[i] * ((int)frq.size() - i));
+  }
+  cout << n - saved << "\n";
+}
+
 int32_t main() {
   //  freopen("whereami.in", "r", stdin);
   //  freopen("whereami.out", "w", stdout);

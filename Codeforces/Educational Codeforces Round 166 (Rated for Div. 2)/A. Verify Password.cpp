@@ -1,12 +1,14 @@
 // ﷽
-// Contest: Codeforces Round 948 (Div. 2)
+// Contest: Educational Codeforces Round 166 (Rated for Div. 2)
 // Judge: Codeforces
-// URL: https://codeforces.com/contest/1977/problem/B
+// URL: https://codeforces.com/contest/1976/problem/0
 // Memory Limit: 256
-// Time Limit: 1000
-// Start: Sun 26 May 2024 05:40:19 PM EEST
+// Time Limit: 2000
+// Start: Thu 30 May 2024 05:36:00 PM EEST
 //
 #include <bits/stdc++.h>
+
+#include <algorithm>
 using namespace std;
 #ifdef MOHAMED
 #include "debug.hpp"
@@ -43,30 +45,36 @@ ostream &operator<<(ostream &output, const vector<T> &data) {
 // 48-57 -> 0-9  65-90 -> A-Z 97-122 -> a-z
 
 void solve() {
-  ll x;
-  cin >> x;
-  vi res;
+  int n;
+  cin >> n;
+  vector<char> arr(n);
+  for (auto &it : arr) cin >> it;
 
-  while (x != 0) {
-    if (x & 1 ^ 1) {
-      res.push_back(0);
-    } else {
-      if (x % 4 == 1) {  // يارب
-        res.push_back(1);
-        x--;
-      } else {
-        res.push_back(-1);
-        x++;
-      }
+  string digits;
+  string chars;
+  for (int i = 0; i < n - 1; ++i) {
+    if ((arr[i+1] >= '0' && arr[i+1] <= '9') &&
+        (arr[i] >= 'a' && arr[i ] <= 'z')) {
+      no;
+      return;
     }
-    x >>= 1;
+    if (arr[i] >= '1' && arr[i] <= '9') {
+      digits.push_back(arr[i]);
+    } else {
+      chars.push_back(arr[i]);
+    }
   }
+  if (arr[n - 1] >= '0' && arr[n - 1] <= '9')
+    digits.push_back(arr[n - 1]);
+  else
+    chars.push_back(arr[n - 1]);
+  debug(digits);
+  debug(chars);
 
-  cout << res.size() << endl;
-  for (int i = 0; i < res.size(); ++i) {
-    cout << res[i] << " ";
-  }
-  cout << endl;
+  if (is_sorted(all(digits)) && is_sorted(all(chars))) {
+    yes;
+  } else
+    no;
 }
 int32_t main() {
   //  freopen("whereami.in", "r", stdin);

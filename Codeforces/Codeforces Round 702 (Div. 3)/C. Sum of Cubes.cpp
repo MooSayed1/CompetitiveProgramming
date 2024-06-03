@@ -1,12 +1,14 @@
 // ﷽
-// Contest: Codeforces Round 948 (Div. 2)
+// Contest: Codeforces Round 702 (Div. 3)
 // Judge: Codeforces
-// URL: https://codeforces.com/contest/1977/problem/B
+// URL: https://codeforces.com/problemset/problem/1490/C
 // Memory Limit: 256
-// Time Limit: 1000
-// Start: Sun 26 May 2024 05:40:19 PM EEST
+// Time Limit: 2000
+// Start: Sat 01 Jun 2024 04:11:22 AM EEST
 //
 #include <bits/stdc++.h>
+
+#include <algorithm>
 using namespace std;
 #ifdef MOHAMED
 #include "debug.hpp"
@@ -27,7 +29,7 @@ using namespace std;
 #define no cout << "NO\n"
 #define vll vector<ll>
 #define vi vector<int>
-#define OO 1e8
+#define OO 1e12
 #define endl "\n"
 
 template <typename T>
@@ -41,32 +43,22 @@ ostream &operator<<(ostream &output, const vector<T> &data) {
   return output;
 }
 // 48-57 -> 0-9  65-90 -> A-Z 97-122 -> a-z
-
+vector<ll> res;
+void pre() {
+  for (int i = 1; i * i * i < OO; ++i) {
+    res.emplace_back(i * i * i);
+  }
+}
 void solve() {
   ll x;
   cin >> x;
-  vi res;
-
-  while (x != 0) {
-    if (x & 1 ^ 1) {
-      res.push_back(0);
-    } else {
-      if (x % 4 == 1) {  // يارب
-        res.push_back(1);
-        x--;
-      } else {
-        res.push_back(-1);
-        x++;
-      }
-    }
-    x >>= 1;
-  }
-
-  cout << res.size() << endl;
-  for (int i = 0; i < res.size(); ++i) {
-    cout << res[i] << " ";
-  }
-  cout << endl;
+  // for (int i = 0; i * i * i < x; ++i) {
+  //   if (binary_search(all(res), x - i * i * i)) {
+  //     yes;
+  //     return;
+  //   }
+  // }
+  // no;
 }
 int32_t main() {
   //  freopen("whereami.in", "r", stdin);

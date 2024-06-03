@@ -1,12 +1,14 @@
 // ﷽
-// Contest: Codeforces Round 948 (Div. 2)
+// Contest: Codeforces Round 898 (Div. 4)
 // Judge: Codeforces
-// URL: https://codeforces.com/contest/1977/problem/B
+// URL: https://codeforces.com/contest/1873/problem/B
 // Memory Limit: 256
 // Time Limit: 1000
-// Start: Sun 26 May 2024 05:40:19 PM EEST
+// Start: Sun 02 Jun 2024 09:59:08 PM EEST
 //
 #include <bits/stdc++.h>
+
+#include <algorithm>
 using namespace std;
 #ifdef MOHAMED
 #include "debug.hpp"
@@ -27,7 +29,8 @@ using namespace std;
 #define no cout << "NO\n"
 #define vll vector<ll>
 #define vi vector<int>
-#define OO 1e8
+#define pii pair<int, int>
+#define OO 2e9
 #define endl "\n"
 
 template <typename T>
@@ -43,30 +46,18 @@ ostream &operator<<(ostream &output, const vector<T> &data) {
 // 48-57 -> 0-9  65-90 -> A-Z 97-122 -> a-z
 
 void solve() {
-  ll x;
-  cin >> x;
-  vi res;
-
-  while (x != 0) {
-    if (x & 1 ^ 1) {
-      res.push_back(0);
-    } else {
-      if (x % 4 == 1) {  // يارب
-        res.push_back(1);
-        x--;
-      } else {
-        res.push_back(-1);
-        x++;
-      }
-    }
-    x >>= 1;
+  int n;
+  cin >> n;
+  vi arr(n);
+  cin >> arr;
+  sort(all(arr));
+  arr[0] += 1;
+  ll f=1;
+  for(auto&it:arr){
+    f*=it;
   }
-
-  cout << res.size() << endl;
-  for (int i = 0; i < res.size(); ++i) {
-    cout << res[i] << " ";
-  }
-  cout << endl;
+  debug(arr);
+  cout << f << endl;
 }
 int32_t main() {
   //  freopen("whereami.in", "r", stdin);

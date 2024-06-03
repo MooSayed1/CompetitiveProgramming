@@ -1,10 +1,10 @@
 // ﷽
-// Contest: Codeforces Round 948 (Div. 2)
+// Contest: Codeforces Round 721 (Div. 2)
 // Judge: Codeforces
-// URL: https://codeforces.com/contest/1977/problem/B
+// URL: https://codeforces.com/problemset/problem/1527/A
 // Memory Limit: 256
 // Time Limit: 1000
-// Start: Sun 26 May 2024 05:40:19 PM EEST
+// Start: Fri 31 May 2024 12:07:36 AM EEST
 //
 #include <bits/stdc++.h>
 using namespace std;
@@ -43,30 +43,9 @@ ostream &operator<<(ostream &output, const vector<T> &data) {
 // 48-57 -> 0-9  65-90 -> A-Z 97-122 -> a-z
 
 void solve() {
-  ll x;
-  cin >> x;
-  vi res;
-
-  while (x != 0) {
-    if (x & 1 ^ 1) {
-      res.push_back(0);
-    } else {
-      if (x % 4 == 1) {  // يارب
-        res.push_back(1);
-        x--;
-      } else {
-        res.push_back(-1);
-        x++;
-      }
-    }
-    x >>= 1;
-  }
-
-  cout << res.size() << endl;
-  for (int i = 0; i < res.size(); ++i) {
-    cout << res[i] << " ";
-  }
-  cout << endl;
+  int n;
+  cin >> n;
+  cout << (1 << __lg(n)) - 1 << endl;
 }
 int32_t main() {
   //  freopen("whereami.in", "r", stdin);
