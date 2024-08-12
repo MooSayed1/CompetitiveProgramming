@@ -45,7 +45,30 @@ ostream &operator<<(ostream &output, const vector<T> &data) {
 // 48-57 -> 0-9  65-90 -> A-Z 97-122 -> a-z
 
 void solve() {
-
+ int p, q, l, r;
+  cin >> p >> q >> l >> r;
+  bitset<2000> freqa;
+  bitset<2000> freqb;
+  int a, b;
+  while (p--) {
+    cin >> a >> b;
+    for (int i = a; i <= b; i++) {
+      freqa.set(i);
+    }
+  }
+  while (q--) {
+    cin >> a >> b;
+    for (int i = a; i <= b; i++) {
+      freqb.set(i);
+    }
+  }
+  int ans = 0;
+  for (int i = l; i <= r; i++) {
+    if ((freqa&(freqb<<i)).count()) {
+      ans++;
+    }
+  }
+  cout<<ans;
 }
 int32_t main() {
 

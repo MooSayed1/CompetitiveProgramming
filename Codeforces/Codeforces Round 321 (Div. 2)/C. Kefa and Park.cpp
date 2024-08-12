@@ -45,52 +45,32 @@ ostream &operator<<(ostream &output, const vector<T> &data) {
 }
 // 48-57 -> 0-9  65-90 -> A-Z 97-122 -> a-z
 vector<vi> adj;
-vi visited;
-queue<int> q;
-int n, m;
-vi bfs(int src, vector<vi> &adj) {
-  vi distance(adj.size(), OO);
-  distance[src] = visited[src];
-  q.push(src);
-  while (!q.empty()) {
-    int cur = q.front();
-    q.pop();
-    // process node s
-    debug(visited);
-    for (auto u : adj[cur]) {
-      if (distance[u] == OO) {
-        if (distance[cur] >= 1 && visited[u] == 1) {
-          distance[u] = distance[cur] + visited[u];
-          if (distance[u] > m)
-            continue;
-        } else
-          distance[u] = visited[u];
-        q.push(u);
-      }
-    }
-  }
-  return distance;
+vi vis;
+int n,m;
+int dfs(int cur, int fa, int sum) {
+	if (sum <= m && adj[cur].size() == 1) return 1;
+	if (sum > m) return 0;
+	int ans = 0;
+	if (!vis[cur]) sum = 0; 
+	for (auto it : adj[cur]) if (it != fa) {
+		ans += dfs(it, cur, sum + vis[it]);
+	}
+	return ans;
 }
 
 void solve() {
   cin >> n >> m;
-  adj.resize(n);
-  visited.resize(n);
-  cin >> visited;
-  int a, b;
-  while (cin >> a >> b) {
-    --a, --b;
-    adj[a].pb(b);
-    adj[b].pb(a);
-  }
-  vi res = bfs(0, adj);
-  int cnt = 0;
-  for (int i = 1; i <= n; ++i) {
-    if (res[i] <= m && adj[i].size() == 1)
-      ++cnt;
-  }
-  cout << cnt << endl;
-  debug(res);
+  adj.resize(n+1);
+  vis.resize(n+1);
+	for (int i = 1; i <= n; i++)
+		cin >> vis[i];
+	for (int i = 1, u, v; i < n; i++) {
+		cin >> u >> v;
+		adj[u].emplace_back(v);
+		adj[v].emplace_back(u);
+	}
+	adj[1].emplace_back(0);
+	cout << dfs(1, 0, vis[1]);
 }
 int32_t main() {
 

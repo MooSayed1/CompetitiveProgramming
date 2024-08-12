@@ -4,11 +4,9 @@
 // URL: https://cses.fi/problemset/task/1666
 // Memory Limit: 512
 // Time Limit: 1000
-// Start: Mon 25 Mar 2024 07:15:57 AM EET
+// Start: Mon 15 Jul 2024 01:13:15 AM EEST
 //
 #include <bits/stdc++.h>
-#include <random>
-#include <string>
 using namespace std;
 #ifdef MOHAMED
 #include "debug.hpp"
@@ -29,7 +27,11 @@ using namespace std;
 #define no cout << "NO\n"
 #define vll vector<ll>
 #define vi vector<int>
+#define pii pair<int,int>
+#define OO 2e9
 #define endl "\n"
+const int dx[]{0, 1, 0, -1, -1, -1, 1, 1};
+const int dy[]{1, 0, -1, 0, -1, 1, -1, 1};
 
 template <typename T> istream &operator>>(istream &input, vector<T> &data) {
   for (T &x : data)
@@ -44,41 +46,45 @@ ostream &operator<<(ostream &output, const vector<T> &data) {
   return output;
 }
 // 48-57 -> 0-9  65-90 -> A-Z 97-122 -> a-z
-vector<bool> visited;
-vector<vector<int>> adj;
-int cnt = 0;
-void dfs(int node) {
-  visited[node] = true;
-  // cout << node << " " << visited[node] << endl;
-  for (auto &na : adj[node])
-    if (!visited[na])
-      dfs(na);
-}
-void solve() {
-  int n, m;
-  cin >> n >> m;
-  adj.resize(n);
-  visited.resize(n + 1, false);
-  for (int i = 0; i < m; ++i) {
-    int a, b; // nodes
-    cin >> a >> b;
-    a--, b--;
-    adj[a].push_back(b);
-    adj[b].push_back(a);
+
+vector<vi>adj;
+vector<bool>vis;
+void dfs(int node){
+  if(vis[node])return;
+  vis[node]=1;
+  for(auto&it:adj[node]){
+    dfs(it);
   }
-  vector<int> res;
-  for (int i = 0; i < n; ++i) {
-    if (!visited[i]) {
+}
+
+void solve() {
+  int n,m;cin>>n>>m;
+  adj.resize(n);
+  vis.assign(n,0);
+  while(m--)
+  {
+    int a,b;cin>>a>>b;a--,b--;
+    debug(a,b);
+    adj[a].pb(b);
+    adj[b].pb(a);
+  }
+  debug(adj);
+  int cnt=0;
+  vector<pair<int,int>>res;
+  for(int i=0;i<n;++i){
+    if(!vis[i])
+    {
       dfs(i);
-      if (cnt >= 1) {
-        res.push_back(i);
-        res.push_back(i + 1);
+      if(cnt>0){
+        res.push_back({i,i+1});
       }
       cnt++;
     }
   }
-  cout << cnt - 1 << endl;
-  cout << res << endl;
+  cout << cnt - 1<< endl;
+  for(auto [a,b]:res){
+    cout << a << ' ' << b <<endl;
+  }
 }
 int32_t main() {
 
