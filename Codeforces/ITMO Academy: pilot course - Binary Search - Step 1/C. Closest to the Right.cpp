@@ -55,7 +55,7 @@ void solve() {
   while(q--){
     int x;
     cin >> x;
-    auto it= upper_bound(all(arr),x-1)-arr.begin()+1;
+    auto it= lower_bound(all(arr),x)-arr.begin()+1;
     cout<< it <<endl;
   }
 

@@ -46,19 +46,21 @@ ostream &operator<<(ostream &output, const vector<T> &data) {
   return output;
 }
 
-void solve() {
-  int n,q;
-  cin >> n;
-  vi arr(n);
-  cin >> arr;
-  sort(all(arr));
-  cin >> q;
-  while(q--){
-    int l,r;
-    cin >> l >> r;
-    auto it = (lower_bound(all(arr),l) - upper_bound(all(arr),r))*-1;
-    cout<< it << ' ';
+int fac(int n){
+  if(n<=1){
+    return 1;
   }
+  return n * fac(n-1);
+}
+int ncr(int n,int r){
+  if (r > n) return 0;
+  return (fac(n))/(fac(r)*fac(n-r));
+}
+
+void solve() {
+  int n,r;
+  cin >> n >> r;
+  cout << ncr(n,r) << endl;
 }
 int32_t main() {
 

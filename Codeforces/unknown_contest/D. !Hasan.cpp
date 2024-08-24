@@ -1,13 +1,12 @@
 // ﷽
-// Contest: Codeforces Round 321 (Div. 2)
+// Contest: unknown_contest
 // Judge: Codeforces
-// URL: https://codeforces.com/problemset/problem/580/C
+// URL: https://codeforces.com/problemset/gymProblem/101257/D
 // Memory Limit: 256
-// Time Limit: 2000
-// Start: Tue 20 Aug 2024 12:27:08 AM EEST
+// Time Limit: 250
+// Start: Thu 22 Aug 2024 01:10:24 AM EEST
 //
-#include<bits/stdc++.h>
-
+#include <bits/stdc++.h>
 using namespace std;
 
 #ifdef MOHAMED
@@ -50,42 +49,20 @@ ostream &operator<<(ostream &output, const vector<T> &data) {
   return output;
 }
 // 48-57 -> 0-9  65-90 -> A-Z 97-122 -> a-z
-vector<vi>adj;
-vector<bool>vis;
-vi cats;
-int n,m;
-int ans;
-void dfs(int node,int parent,int cnt){
-  if(parent!=-1) {
-    if (cats[node] && cats[parent]) {
-      cnt++;
-    } else cnt = 0;
-  }
-  if(cnt+1>m)return;
-  if(adj[node].size()==1&&node)ans++;
-  for(auto&it:adj[node]){
-    if(it!=parent)
-      dfs(it,node,cnt);
-  }
-}
-void solve() {
-  cin >> n >> m;
-  adj.assign(n, vector<int>());
-  cats.assign(n,0);
 
-  for(int i=0;i<n;++i){
-    cin>>cats[i];
+void solve() {
+  int n,x,y;
+  cin>>n>>x>>y;
+  int l=0,r=2e18;
+  while(l<=r){
+    int mid=l+(r-l)/2;
+    if((mid/x+mid/y)>=n){
+      r=mid-1;
+    }else l=mid+1;
   }
-  for(int i=0;i<n-1;++i){
-    int a,b;
-    cin>>a>>b;
-    a--,b--;
-    adj[a].pb(b);
-    adj[b].pb(a);
-  }
-  dfs(0,-1,0);
-  cout << ans << endl;
+  cout << l << endl;
 }
+
 int32_t main() {
 
   //  freopen("whereami.in", "r", stdin);

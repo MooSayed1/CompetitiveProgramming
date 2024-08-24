@@ -1,13 +1,12 @@
 // ﷽
-// Contest: Codeforces Round 321 (Div. 2)
+// Contest: Codeforces Round 364 (Div. 2)
 // Judge: Codeforces
-// URL: https://codeforces.com/problemset/problem/580/C
+// URL: https://codeforces.com/problemset/problem/701/C
 // Memory Limit: 256
 // Time Limit: 2000
-// Start: Tue 20 Aug 2024 12:27:08 AM EEST
+// Start: Thu 22 Aug 2024 01:40:39 AM EEST
 //
-#include<bits/stdc++.h>
-
+#include <bits/stdc++.h>
 using namespace std;
 
 #ifdef MOHAMED
@@ -50,41 +49,27 @@ ostream &operator<<(ostream &output, const vector<T> &data) {
   return output;
 }
 // 48-57 -> 0-9  65-90 -> A-Z 97-122 -> a-z
-vector<vi>adj;
-vector<bool>vis;
-vi cats;
-int n,m;
-int ans;
-void dfs(int node,int parent,int cnt){
-  if(parent!=-1) {
-    if (cats[node] && cats[parent]) {
-      cnt++;
-    } else cnt = 0;
-  }
-  if(cnt+1>m)return;
-  if(adj[node].size()==1&&node)ans++;
-  for(auto&it:adj[node]){
-    if(it!=parent)
-      dfs(it,node,cnt);
-  }
-}
-void solve() {
-  cin >> n >> m;
-  adj.assign(n, vector<int>());
-  cats.assign(n,0);
 
+void solve() {
+  int n;
+  cin >> n;
+  string s;
+  cin >> s;
+  map<char,int>mp;
+  for(auto&it:s){
+    mp[it]++;
+  }
+  int l=0,r=0;
   for(int i=0;i<n;++i){
-    cin>>cats[i];
+    if(mp[s[i]]==1){l=i;break;}
+    mp[s[i]]--;
   }
-  for(int i=0;i<n-1;++i){
-    int a,b;
-    cin>>a>>b;
-    a--,b--;
-    adj[a].pb(b);
-    adj[b].pb(a);
+
+  for(int i=n-1;i>=l;--i){
+    if(mp[s[i]]==1){r=i;break;}
+    mp[s[i]]--;
   }
-  dfs(0,-1,0);
-  cout << ans << endl;
+  cout << r-l+1 << endl;
 }
 int32_t main() {
 

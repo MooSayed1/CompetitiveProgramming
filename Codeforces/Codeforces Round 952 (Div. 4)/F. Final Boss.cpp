@@ -1,15 +1,13 @@
 // ﷽
-// Contest: Codeforces Round 321 (Div. 2)
+// Contest: Codeforces Round 952 (Div. 4)
 // Judge: Codeforces
-// URL: https://codeforces.com/problemset/problem/580/C
+// URL: https://codeforces.com/contest/1985/problem/F
 // Memory Limit: 256
 // Time Limit: 2000
-// Start: Tue 20 Aug 2024 12:27:08 AM EEST
+// Start: Wed 14 Aug 2024 07:05:33 PM EEST
 //
-#include<bits/stdc++.h>
-
+#include <bits/stdc++.h>
 using namespace std;
-
 #ifdef MOHAMED
 #include "debug.hpp"
 #else
@@ -25,7 +23,6 @@ using namespace std;
 #define all(a) (a).begin(), (a).end()
 #define sz(a) (int)(a).size()
 #define pb push_back
-#define f(i, a, b) for (int i = a; i < b; i++)
 #define yes cout << "YES\n"
 #define no cout << "NO\n"
 #define vll vector<ll>
@@ -33,7 +30,6 @@ using namespace std;
 #define pii pair<int,int>
 #define OO 2e9
 #define endl "\n"
-#define popCnt(x) (__builtin_popcountll(x))
 const int dx[]{0, 1, 0, -1, -1, -1, 1, 1};
 const int dy[]{1, 0, -1, 0, -1, 1, -1, 1};
 
@@ -50,41 +46,34 @@ ostream &operator<<(ostream &output, const vector<T> &data) {
   return output;
 }
 // 48-57 -> 0-9  65-90 -> A-Z 97-122 -> a-z
-vector<vi>adj;
-vector<bool>vis;
-vi cats;
-int n,m;
-int ans;
-void dfs(int node,int parent,int cnt){
-  if(parent!=-1) {
-    if (cats[node] && cats[parent]) {
-      cnt++;
-    } else cnt = 0;
+
+int h,n;
+bool can(vi& arr,vi& coldown,int time){
+  int ans=0;
+  for(int i=0;i<arr.size();++i){
+    debug(ans);
+    ans+=((time/coldown[i])+1)*arr[i];
+    if(ans>=h)return 1;
   }
-  if(cnt+1>m)return;
-  if(adj[node].size()==1&&node)ans++;
-  for(auto&it:adj[node]){
-    if(it!=parent)
-      dfs(it,node,cnt);
-  }
+  return (ans>=h)?1:0;
 }
 void solve() {
-  cin >> n >> m;
-  adj.assign(n, vector<int>());
-  cats.assign(n,0);
-
-  for(int i=0;i<n;++i){
-    cin>>cats[i];
+  cin >> h >> n;
+  vi arr(n);
+  cin >> arr;
+  vi cldown(n);
+  cin >> cldown;
+  int l=0,r=1e11;
+  while(l<=r){
+    int mid=(l+r)/2;
+    if(can(arr,cldown,mid))
+    {
+      r=mid-1;
+    }else{
+      l=mid+1;
+    }
   }
-  for(int i=0;i<n-1;++i){
-    int a,b;
-    cin>>a>>b;
-    a--,b--;
-    adj[a].pb(b);
-    adj[b].pb(a);
-  }
-  dfs(0,-1,0);
-  cout << ans << endl;
+  cout << l + 1<< endl;
 }
 int32_t main() {
 
@@ -92,7 +81,7 @@ int32_t main() {
   //  freopen("whereami.out", "w", stdout);
   fastio();
   int t = 1;
-  // cin>>t;
+  cin>>t;
   while (t--)
     solve();
   return 0;

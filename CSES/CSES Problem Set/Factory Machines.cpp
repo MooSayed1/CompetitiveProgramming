@@ -1,10 +1,10 @@
 // ﷽
-// Contest: ITMO Academy: pilot course - Binary Search - Step 1
-// Judge: Codeforces
-// URL: https://codeforces.com/edu/course/2/lesson/6/1/practice/contest/283911/problem/B
+// Contest: CSES Problem Set
+// Judge: CSES
+// URL: https://cses.fi/problemset/task/1620
 // Memory Limit: 512
-// Time Limit: 2000
-// Start: Mon 12 Aug 2024 06:41:31 PM EEST
+// Time Limit: 1000
+// Start: Tue 13 Aug 2024 12:50:46 AM EEST
 //
 #include <bits/stdc++.h>
 using namespace std;
@@ -46,27 +46,34 @@ ostream &operator<<(ostream &output, const vector<T> &data) {
   return output;
 }
 // 48-57 -> 0-9  65-90 -> A-Z 97-122 -> a-z
-void solve() {
-  int n,q;
-  cin >> n >> q;
-  vi arr(n);
-  cin >> arr;
-  while(q--){
-    int x;
-    cin >> x;
-    auto it= lower_bound(all(arr),x)-arr.begin()+1;
-    cout<< it <<endl;
+
+void solve(vi& perm, int st) {
+  if (st == perm.size() - 1) {
+    for (int num : perm) {
+      cout << num << " ";
+    }
+    cout << endl;
+    return;
   }
 
+  for (int i = st; i < perm.size(); ++i) {
+    if (i != st && perm[i] == perm[st]) continue; 
+    swap(perm[st], perm[i]);
+    solve(perm, st + 1);
+    swap(perm[st], perm[i]);
+  }
 }
-int32_t main() {
 
-  //  freopen("whereami.in", "r", stdin);
-  //  freopen("whereami.out", "w", stdout);
-  fastio();
-  int t = 1;
-  // cin>>t;
-  while (t--)
-    solve();
+int32_t main() {
+  fastio(); 
+  int n;
+  cin >> n;
+
+  vi perm(n);
+  cin >> perm;
+  sort(all(perm)); 
+
+  solve(perm, 0); 
+
   return 0;
 }

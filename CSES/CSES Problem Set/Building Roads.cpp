@@ -68,7 +68,6 @@ void solve() {
     adj[a].pb(b);
     adj[b].pb(a);
   }
-  debug(adj);
   int cnt=0;
   vector<pair<int,int>>res;
   for(int i=0;i<n;++i){
