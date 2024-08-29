@@ -4,10 +4,11 @@
 // URL: https://codeforces.com/contest/727/problem/A
 // Memory Limit: 256
 // Time Limit: 1000
-// Start: Wed 24 Jul 2024 02:37:25 PM EEST
+// Start: Sun 25 Aug 2024 02:22:54 PM EEST
 //
 #include <bits/stdc++.h>
 using namespace std;
+
 #ifdef MOHAMED
 #include "debug.hpp"
 #else
@@ -19,10 +20,11 @@ using namespace std;
   ios_base::sync_with_stdio(false);                                            \
   cin.tie(NULL);
 
-#define ll long long
+#define int long long
 #define all(a) (a).begin(), (a).end()
 #define sz(a) (int)(a).size()
 #define pb push_back
+#define f(i, a, b) for (int i = a; i < b; i++)
 #define yes cout << "YES\n"
 #define no cout << "NO\n"
 #define vll vector<ll>
@@ -30,6 +32,7 @@ using namespace std;
 #define pii pair<int,int>
 #define OO 2e9
 #define endl "\n"
+#define popCnt(x) (__builtin_popcountll(x))
 const int dx[]{0, 1, 0, -1, -1, -1, 1, 1};
 const int dy[]{1, 0, -1, 0, -1, 1, -1, 1};
 
@@ -47,23 +50,44 @@ ostream &operator<<(ostream &output, const vector<T> &data) {
 }
 // 48-57 -> 0-9  65-90 -> A-Z 97-122 -> a-z
 
-void solve() {
-  string s;
-  cin>>s;
-  ll sum=0;
-  for(int i = 0; i < s.size()++i){
-    sum=((1>>i)*stoi(s[i]))+sum;
+bool dfs(int a, int b, vi &res) {
+  res.push_back(a);
+  if(a==b){
+    return true;
   }
-    cout << sum << endl;
+  if(a>b){
+    res.pop_back();
+    return false;
+  }
+  return dfs(a*2,b,res);
+  return dfs(a*10+1,b,res);
+  res.pop_back();
+  return false;
 }
 
+void solve() {
+  int a, b;
+  cin >> a >> b;
+  vi res;
+
+  if (dfs(a, b, res)) {
+    yes;
+    cout << res.size() << endl;
+    for (int x : res) {
+      cout << x << " ";
+    }
+    cout << endl;
+  } else {
+    no;
+  }
+}
 int32_t main() {
 
   //  freopen("whereami.in", "r", stdin);
   //  freopen("whereami.out", "w", stdout);
   fastio();
   int t = 1;
-  cin>>t;
+  // cin>>t;
   while (t--)
     solve();
   return 0;

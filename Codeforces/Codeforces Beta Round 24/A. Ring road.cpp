@@ -1,10 +1,10 @@
 // ﷽
-// Contest: CSES Problem Set
-// Judge: CSES
-// URL: https://cses.fi/problemset/task/1668
-// Memory Limit: 512
-// Time Limit: 1000
-// Start: Tue 27 Aug 2024 05:01:32 PM EEST
+// Contest: Codeforces Beta Round 24
+// Judge: Codeforces
+// URL: https://codeforces.com/contest/24/problem/A
+// Memory Limit: 256
+// Time Limit: 2000
+// Start: Tue 27 Aug 2024 11:25:26 PM EEST
 //
 #include <bits/stdc++.h>
 using namespace std;
@@ -49,57 +49,10 @@ ostream &operator<<(ostream &output, const vector<T> &data) {
   return output;
 }
 // 48-57 -> 0-9  65-90 -> A-Z 97-122 -> a-z
-vector<vi>adj;
-vector<bool>vis;
-vi color;
-bool cycle;
-
-void dfs(int node, int col) {
-  if(color[node])return;
-  color[node] = col;
-  for (auto &it : adj[node]) {
-    if(col==1)
-      dfs(it, 2);
-    else
-      dfs(it, 1);
-    if (color[it] == color[node]) {
-      cycle = true;
-      return;
-    }
-  }
-}
 
 void solve() {
-  int n, m;
-  cin >> n >> m;
-  adj.assign(n+1, vector<int>());
-  color.assign(n+1, 0);
-  cycle = false;
 
-  for (int i = 0; i < m; ++i) {
-    int a, b;
-    cin >> a >> b;
-    adj[a].pb(b);
-    adj[b].pb(a);
-  }
-  debug(adj);
-
-  for (int i = 1; i <= n; ++i) {
-    if (!color[i]) {
-      dfs(i, 1);
-      if (cycle) {
-        cout << "IMPOSSIBLE\n";
-        return;
-      }
-    }
-  }
-
-  for (auto &it : color) {
-    if(it)
-      cout << it << ' ';
-  }
 }
-
 int32_t main() {
 
   //  freopen("whereami.in", "r", stdin);

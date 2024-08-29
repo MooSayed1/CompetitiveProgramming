@@ -68,6 +68,7 @@ void dfs(int node,int parent,int cnt){
       dfs(it,node,cnt);
   }
 }
+
 void solve() {
   cin >> n >> m;
   adj.assign(n, vector<int>());
