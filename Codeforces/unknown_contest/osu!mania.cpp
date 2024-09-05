@@ -1,10 +1,10 @@
 // ﷽
-// Contest: Standard #1 (Frequency , prefix sum , vector , pair ,struct)
+// Contest: unknown_contest
 // Judge: Codeforces
-// URL: https://codeforces.com/group/c3FDl9EUi9/contest/262795/problem/M
+// URL: https://m2.codeforces.com/contest/2009/problem/B
 // Memory Limit: 256
 // Time Limit: 1000
-// Start: Thu 29 Aug 2024 10:02:44 PM EEST
+// Start: Tue 03 Sep 2024 06:35:09 PM EEST
 //
 #include <bits/stdc++.h>
 using namespace std;
@@ -51,21 +51,20 @@ ostream &operator<<(ostream &output, const vector<T> &data) {
 // 48-57 -> 0-9  65-90 -> A-Z 97-122 -> a-z
 
 void solve() {
-  int n,q;cin>>n>>q;
-  vi arr(n);
-  cin >> arr;
-  sort(all(arr));
-  arr.erase(unique(all(arr)), arr.end());
-  n=arr.size();
-  while(q--){
-    int x;cin>>x;
-    int indx = lower_bound(all(arr),x)-arr.begin();
-    if(arr[indx]==x)
-      cout << indx << ' ' << n-(indx+1) <<endl;
-    else{
-      cout << indx << ' ' << n-indx << endl;
+  int n;
+  cin >> n;
+    vector<vector<char>> arr(n, vector<char>(4));
+  for(int i=0;i<n;++i){
+    for(int j=0;j<4;++j){
+      cin>>arr[i][j];
     }
   }
+  for(int i=n-1;i>=0;--i){
+    for(int j=0;j<4;++j){
+      if(arr[i][j]=='#')cout<<j+1<<" ";
+    }
+  }
+  cout << endl;
 }
 int32_t main() {
 
@@ -73,7 +72,7 @@ int32_t main() {
   //  freopen("whereami.out", "w", stdout);
   fastio();
   int t = 1;
-  // cin>>t;
+  cin>>t;
   while (t--)
     solve();
   return 0;

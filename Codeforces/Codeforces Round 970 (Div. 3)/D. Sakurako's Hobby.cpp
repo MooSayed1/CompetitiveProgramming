@@ -1,10 +1,10 @@
 // ﷽
-// Contest: Standard #1 (Frequency , prefix sum , vector , pair ,struct)
+// Contest: Codeforces Round 970 (Div. 3)
 // Judge: Codeforces
-// URL: https://codeforces.com/group/c3FDl9EUi9/contest/262795/problem/M
+// URL: https://codeforces.com/contest/2008/problem/D
 // Memory Limit: 256
-// Time Limit: 1000
-// Start: Thu 29 Aug 2024 10:02:44 PM EEST
+// Time Limit: 2000
+// Start: Sun 01 Sep 2024 06:29:11 PM EEST
 //
 #include <bits/stdc++.h>
 using namespace std;
@@ -17,8 +17,8 @@ using namespace std;
 #define debug_bits(...) 0
 #endif
 #define fastio()                                                               \
-  ios_base::sync_with_stdio(false);                                            \
-  cin.tie(NULL);
+ios_base::sync_with_stdio(false);                                            \
+cin.tie(NULL);
 
 #define int long long
 #define all(a) (a).begin(), (a).end()
@@ -38,34 +38,61 @@ const int dy[]{1, 0, -1, 0, -1, 1, -1, 1};
 
 template <typename T> istream &operator>>(istream &input, vector<T> &data) {
   for (T &x : data)
-    input >> x;
+  input >> x;
   return input;
 }
 template <typename T>
 ostream &operator<<(ostream &output, const vector<T> &data) {
 
   for (const T &x : data)
-    output << x << " ";
+  output << x << " ";
   return output;
 }
 // 48-57 -> 0-9  65-90 -> A-Z 97-122 -> a-z
 
-void solve() {
-  int n,q;cin>>n>>q;
-  vi arr(n);
-  cin >> arr;
-  sort(all(arr));
-  arr.erase(unique(all(arr)), arr.end());
-  n=arr.size();
-  while(q--){
-    int x;cin>>x;
-    int indx = lower_bound(all(arr),x)-arr.begin();
-    if(arr[indx]==x)
-      cout << indx << ' ' << n-(indx+1) <<endl;
-    else{
-      cout << indx << ' ' << n-indx << endl;
+vi check(int n, vi& p, string& s) {
+  vector<bool> vis(n, false);
+  vi res(n, 0);
+
+  for (int i = 0; i < n; ++i) {
+    if (!vis[i]) {
+      vi cycle;
+      int j = i;
+      while (!vis[j]) {
+        vis[j] = true;
+        cycle.push_back(j);
+        j = p[j] - 1; 
+      }
+
+      int cnt = 0;
+      for (int idx : cycle) {
+        if (s[idx] == '0') {
+          ++cnt;
+        }
+      }
+
+      for (int idx : cycle) {
+        res[idx] = cnt;
+      }
     }
   }
+
+  return res;
+}
+void solve() {
+
+  int n;
+  cin >> n;
+
+  vi p(n);
+  cin>>p;
+
+  string s;
+  cin >> s;
+
+  vi res = check(n, p, s);
+
+  cout << res << endl;
 }
 int32_t main() {
 
@@ -73,7 +100,7 @@ int32_t main() {
   //  freopen("whereami.out", "w", stdout);
   fastio();
   int t = 1;
-  // cin>>t;
+  cin>>t;
   while (t--)
     solve();
   return 0;

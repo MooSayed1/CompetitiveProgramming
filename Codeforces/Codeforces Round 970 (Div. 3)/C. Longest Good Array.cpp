@@ -1,10 +1,10 @@
 // ﷽
-// Contest: Standard #1 (Frequency , prefix sum , vector , pair ,struct)
+// Contest: Codeforces Round 970 (Div. 3)
 // Judge: Codeforces
-// URL: https://codeforces.com/group/c3FDl9EUi9/contest/262795/problem/M
+// URL: https://codeforces.com/contest/2008/problem/C
 // Memory Limit: 256
-// Time Limit: 1000
-// Start: Thu 29 Aug 2024 10:02:44 PM EEST
+// Time Limit: 2000
+// Start: Sun 01 Sep 2024 06:00:43 PM EEST
 //
 #include <bits/stdc++.h>
 using namespace std;
@@ -50,22 +50,29 @@ ostream &operator<<(ostream &output, const vector<T> &data) {
 }
 // 48-57 -> 0-9  65-90 -> A-Z 97-122 -> a-z
 
+int diff;
+bool can(int x){
+  int sum=x*(x+1)/2;
+  return sum<=diff;
+}
 void solve() {
-  int n,q;cin>>n>>q;
-  vi arr(n);
-  cin >> arr;
-  sort(all(arr));
-  arr.erase(unique(all(arr)), arr.end());
-  n=arr.size();
-  while(q--){
-    int x;cin>>x;
-    int indx = lower_bound(all(arr),x)-arr.begin();
-    if(arr[indx]==x)
-      cout << indx << ' ' << n-(indx+1) <<endl;
-    else{
-      cout << indx << ' ' << n-indx << endl;
-    }
+  int a,b;
+  cin >> a >> b;
+  map<int,int>mp;
+  mp[1]++;
+  mp[5]+=2;
+  debug(mp);
+  diff=b-a;
+  int l=0,r=2e9;
+  int ans=0;
+  while(l<=r){
+    int mid=(l+r)/2;
+    if(can(mid-1)){
+      debug(mid);
+      l=mid+1;
+    }else r=mid-1;
   }
+  cout << r << endl;
 }
 int32_t main() {
 
@@ -73,7 +80,7 @@ int32_t main() {
   //  freopen("whereami.out", "w", stdout);
   fastio();
   int t = 1;
-  // cin>>t;
+  cin>>t;
   while (t--)
     solve();
   return 0;
