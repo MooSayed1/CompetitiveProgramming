@@ -15,4 +15,13 @@ int main(int argc, char *argv[]) {
 	registerGen(argc, argv, 1);
 	// atoi(argv[1]);
 	// rnd.next(l, r), or it can take regex like: "[a-zA-z0-9]{1,10}"
+  int n = rnd.next(1,200000);
+  cout<<n<<' ';
+  int k = rnd.next(1,n);
+  cout << k << endl;
+  while(k--){
+    int l=rnd.next(1,n),r=rnd.next(1,n);
+    if(l>r)swap(l,r);
+    cout << l << ' ' << r << endl;
+  }
 }
