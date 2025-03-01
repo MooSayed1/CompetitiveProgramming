@@ -7,7 +7,7 @@ using namespace std;
 #define debug_itr(...) 0
 #define debug_bits(...) 0
 #endif
-#define fast                                                               \
+#define fast                                                                   \
   ios_base::sync_with_stdio(false);                                            \
   cin.tie(NULL);
 
@@ -21,42 +21,46 @@ void solve() {
   int n;
   cin >> n;
   vi arr(n);
-  for(auto&it:arr)cin>>it;
+  for (auto &it : arr)
+    cin >> it;
 
-  int sp_indx = -1;
-  for (int i = 0; i < n; ++i) {
-    if (arr[i] != -1 && arr[i] != 1) {
-      sp_indx = i;
-      break;
+  vi res;
+  vector dp = vector(n, vi(1e4, -1));
+  auto go = [&](auto &&go, int i, int sum) -> int {
+    debug(i);
+    if (i == n) {
+      res.push_back(sum);
+      return 0;
     }
-  }
+    if (~sum)
+      if (~dp[i][sum])
+        return 0;
 
-  set<int> st;
-  st.insert(0);   
-  vi pref(n + 1, 0);
-  for (int i = 0; i < n; ++i) {
-    pref[i + 1] = pref[i] + arr[i];
-  }
+    int take = 0, leave = 0;
+    take = go(go, i + 1, sum + arr[i]);
+    leave = go(go, i + 1, sum);
+    if (~sum)
+      dp[i][sum] = take + leave;
+    return dp[i][sum];
+  };
 
-  for (int i = 0; i < n; ++i) {  // i know it will get TLE but why not
-    for (int j = i; j < n; ++j) {
-      int subarray_sum = pref[j + 1] - pref[i];
-      st.insert(subarray_sum);
-    }
-  }
+  go(go, 0, -1);
 
-  cout << st.size() << "\n";
-  for (int sum : st) {
-    cout << sum << " ";
+  set<int> st(all(res));
+  res.assign(all(st));
+  cout << res.size() << endl;
+  for (auto &it : res) {
+    cout << it << ' ';
   }
-  cout << "\n";
+  cout << endl;
+  debug(res);
 
 }
 int32_t main() {
 
   fast;
   int t = 1;
-  cin>>t;
+  cin >> t;
   while (t--)
     solve();
   return 0;
