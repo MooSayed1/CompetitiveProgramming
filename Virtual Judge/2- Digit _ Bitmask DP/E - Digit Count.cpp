@@ -41,24 +41,35 @@ ostream &operator<<(ostream &output, const vector<T> &data) {
 }
 
 void solve() {
-  int n, k;
-  cin >> n >> k;
-  vector<int> arr(n);
-  cin >> arr;
-  auto go = [&](auto &&go, int i, int pv) -> int {
-    if (i == n) {
+  int m, n;
+  cin >> m >> n;
+  vector<int> arr(m);
+  for (int i = 0; i < m; i++) {
+    cin >> arr[i];
+  }
+
+  vector<vector<int>> dp(n + 1, vector<int>(m, -1));
+
+  auto go = [&](auto &go, int pos, int last) -> int {
+    if (pos == n)
       return 1;
+    if (dp[pos][last] != -1)
+      return dp[pos][last];
+
+    int ways = 0;
+    for (int j = 0; j < m; j++) {
+      if (abs(arr[last] - arr[j]) <= 2) {
+        ways += go(go, pos + 1, j);
+      }
     }
-    int ans = 0;
-    for (auto &it : arr) {
-      if (abs(pv - it) > 2)
-        continue;
-      ans += go(go, i + 1, it);
-    }
-    return ans;
+    return dp[pos][last] = ways;
   };
 
-  cout << go(go, 0, 0) << endl;
+  int ans = 0;
+  for (int i = 0; i < m; ++i) {
+    ans += go(go, 1, i);
+  }
+  cout << ans << "\n";
 }
 int32_t main() {
 
@@ -67,8 +78,9 @@ int32_t main() {
   fastio();
   int t = 1;
   cin >> t;
-  while (t--) {
-    cout << "Case " << t + 1 << ": ";
+  int ca = 0;
+  while (t != ca) {
+    cout << "Case " << ++ca << ": ";
     solve();
   }
   return 0;
