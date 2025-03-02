@@ -44,20 +44,21 @@ void solve() {
   int n, k;
   cin >> n >> k;
   vector<int> arr(n);
-  cin>>arr;
-  vector<bitset<501>> dp(n);
-  auto go = [&](auto &&go, int i, int sum, bitset<501> bt) -> void {
-    if (i == n)
-      return;
-    if(sum==k)
-    if (~dp[i][sum])
-      return;
-    go(i + 1, sum, bt);
-    if(i+1<n){
-      bt[arr[i]]=1;
-      go(i+1,sum+arr[i],bt);
+  cin >> arr;
+  auto go = [&](auto &&go, int i, int pv) -> int {
+    if (i == n) {
+      return 1;
     }
+    int ans = 0;
+    for (auto &it : arr) {
+      if (abs(pv - it) > 2)
+        continue;
+      ans += go(go, i + 1, it);
+    }
+    return ans;
   };
+
+  cout << go(go, 0, 0) << endl;
 }
 int32_t main() {
 
