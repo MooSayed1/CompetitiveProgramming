@@ -1,89 +1,76 @@
-// ﷽
-// Contest: 2- Digit / Bitmask DP
-// Judge: Virtual Judge
-// URL: https://vjudge.net/contest/696623#problem/F
-// Memory Limit: 256
-// Time Limit: 2000
-// Start: Thu 27 Feb 2025 11:11:27 PM EET
-//
 #include <bits/stdc++.h>
 using namespace std;
-#ifdef MOHAMED
-#include "debug.hpp"
-#else
-#define debug(...) 0
-#define debug_itr(...) 0
-#define debug_bits(...) 0
-#endif
-#define fastio()                                                               \
-  ios_base::sync_with_stdio(false);                                            \
-  cin.tie(NULL);
-
-#define int long long
-#define all(a) (a).begin(), (a).end()
-#define vi vector<int>
-#define OO 2e9
-#define endl "\n"
-#define popCnt(x) (__builtin_popcountll(x))
-const int MOD = 1e9 + 7;
-
-template <typename T> istream &operator>>(istream &input, vector<T> &data) {
-  for (T &x : data)
-    input >> x;
-  return input;
-}
-template <typename T>
-ostream &operator<<(ostream &output, const vector<T> &data) {
-
-  for (const T &x : data)
-    output << x << " ";
-  return output;
-}
-
-void solve() {
-  int n, m, k;
-  cin >> n >> m >> k;
-  vector<int> v(n);
-  for (int i = 0; i < n; i++) {
-    cin >> v[i];
-  }
-  map<pair<int, int>, int> mp;
-  for (int i = 0; i < k; ++i) {
-    int l, r;
-    cin >> l >> r;
-    int c;
-    cin >> c;
-    mp[{l - 1, r - 1}] = c;
-  }
-  vector dp(n+1, vi(1 << n, -1));
-
-  auto go = [&](auto &&go, int prv, int mask) -> int {
-    if (popCnt(mask) == m) {
-      return 0;
+typedef long long ll;
+ 
+// A large negative value to represent "impossible" states.
+const ll NEG_INF = -1e18;
+ 
+// Structure to store each person’s data.
+struct Person {
+    ll a;               // audience strength
+    vector<ll> s;       // playing strengths for each of the p positions
+};
+ 
+int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+ 
+    int n, p, k;
+    cin >> n >> p >> k;
+    
+    // Read people data.
+    vector<Person> persons(n);
+    for (int i = 0; i < n; i++){
+        cin >> persons[i].a;
     }
-    int &ret = dp[prv][mask];
-    if (ret != -1)
-      return ret;
-
-    int ans = 0;
-    for (int j = 0; j < n; ++j) {
-      if (mask & (1 << j))
-        continue;
-      ans = max(ans, mp[{prv, j}] + v[j] + go(go, j, mask | (1 << j)));
+    for (int i = 0; i < n; i++){
+        persons[i].s.resize(p);
+        for (int j = 0; j < p; j++){
+            cin >> persons[i].s[j];
+        }
     }
-    ret = ans;
-    return ret;
-  };
-  cout << go(go, n, 0);
-}
-int32_t main() {
-
-  //  freopen("whereami.in", "r", stdin);
-  //  freopen("whereami.out", "w", stdout);
-  fastio();
-  int t = 1;
-  // cin>>t;
-  while (t--)
-    solve();
-  return 0;
+    
+    // Sort persons in descending order by their audience strength.
+    sort(persons.begin(), persons.end(), [](const Person &A, const Person &B) {
+        return A.a > B.a;
+    });
+    
+    int totalStates = 1 << p; // There are 2^p possible ways to fill p positions.
+    
+    // dp[i][mask] = maximum total strength after considering the first i persons,
+    // with the set of players (positions filled) given by 'mask'.
+    // (i - popcount(mask)) is then the number of persons already selected as audience.
+    vector<vector<ll>> dp(n + 1, vector<ll>(totalStates, NEG_INF));
+    dp[0][0] = 0;
+    
+    for (int i = 0; i < n; i++){
+        for (int mask = 0; mask < totalStates; mask++){
+            // If state is unreachable, skip it.
+            if (dp[i][mask] == NEG_INF) continue;
+ 
+            // Number of persons chosen as audience so far
+            int cnt = i - __builtin_popcount(mask);
+ 
+            // Option 1: Skip person i (do not choose him at all).
+            dp[i + 1][mask] = max(dp[i + 1][mask], dp[i][mask]);
+ 
+            // Option 2: Choose person i as an audience member (if we still need audience).
+            if (cnt < k)
+                dp[i + 1][mask] = max(dp[i + 1][mask], dp[i][mask] + persons[i].a);
+ 
+            // Option 3: Try to assign person i to any position that is still free.
+            for (int pos = 0; pos < p; pos++){
+                if (!(mask & (1 << pos))) {
+                    int newMask = mask | (1 << pos);
+                    dp[i + 1][newMask] = max(dp[i + 1][newMask], dp[i][mask] + persons[i].s[pos]);
+                }
+            }
+        }
+    }
+ 
+    // The answer is the maximum total strength when all n persons have been processed
+    // and all p positions have been filled.
+    cout << dp[n][totalStates - 1] << "\n";
+ 
+    return 0;
 }

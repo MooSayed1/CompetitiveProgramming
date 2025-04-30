@@ -40,37 +40,53 @@ ostream &operator<<(ostream &output, const vector<T> &data) {
   return output;
 }
 
-void solve() {
-  int n, k;
-  cin >> n >> k;
-  vector<int> coins(n);
-  for (int i = 0; i < n; i++) {
-    cin >> coins[i];
+const int N = 501, K = 501;
+int n, k;
+int a[N];
+bool dp[N][K][K], vis[N][K][K];
+
+bool go(int i, int sum, int sub_sum) {
+  if (i == n)
+    return sum == 0 && sub_sum == 0;
+  if (vis[i][sum][sub_sum])
+    return dp[i][sum][sub_sum];
+  vis[i][sum][sub_sum] = 1;
+  bool ans = go(i + 1, sum, sub_sum); // leave subset
+  if (sum >= a[i]) {
+    if (sum - a[i] >= sub_sum) { // take subset, leave sub-subset
+      ans |= go(i + 1, sum - a[i], sub_sum);
+    }
+    if (sub_sum >= a[i]) { // take subset, take sub-subset
+      ans |= go(i + 1, sum - a[i], sub_sum - a[i]);
+    }
   }
+  return dp[i][sum][sub_sum] = ans; 
+}
 
-  vector dp(n + 1, vector<bitset<505>>(k + 1));
-  dp[0][0].set(0);
-
-  for (int i = 0; i < n; i++) {
-    for (int j = 0; j <= k; j++) {
-      dp[i + 1][j] |= dp[i][j]; // leave
-      if (j + coins[i] <= k) {
-        dp[i + 1][j + coins[i]] |= dp[i][j] | (dp[i][j] << coins[i]); // take sum and supsup or take sum without put it in the supsum
+void solve() {
+  cin >> n >> k;
+  for (int i = 0; i < n; ++i) {
+    cin >> a[i];
+  }
+  memset(dp, -1, sizeof dp);
+  vector<int> sums;
+  for (int i = n - 1; i >= 0; --i) {
+    for (int j = 0; j <= k; ++j) {
+      for (int l = 0; l <= j; ++l) {
+        go(i, j, l);
       }
     }
   }
 
-  bitset<505> res = dp[n][k];
-  vector<int> ans;
-  for (int x = 0; x <= k; x++) {
-    if (res.test(x))
-      ans.push_back(x);
+  // go(0, 0,0);
+  for (int i = 0; i <= k; ++i) {
+    if (go(0, k, i))
+      sums.push_back(i);
   }
 
-  cout << ans.size() << "\n";
-  for (int x : ans)
-    cout << x << " ";
-  cout << "\n";
+  cout << sums.size() << endl;
+  for (int &sum : sums)
+    cout << sum << " ";
 }
 int32_t main() {
 
