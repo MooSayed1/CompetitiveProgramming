@@ -1,10 +1,10 @@
 // ﷽
 // Contest: CSES Problem Set
 // Judge: CSES
-// URL: https://cses.fi/problemset/task/1650
+// URL: https://cses.fi/problemset/task/1646
 // Memory Limit: 512
 // Time Limit: 1000
-// Start: Sat 10 May 2025 11:34:11 PM EEST
+// Start: Sat 10 May 2025 10:16:43 PM EEST
 //
 #include <bits/stdc++.h>
 using namespace std;
@@ -45,21 +45,16 @@ ostream &operator<<(ostream &output, const vector<T> &data) {
 void solve() {
   int n, q;
   cin >> n >> q;
-  vi arr(n), pxor(n + 1, 0);
-
-  for (int i = 0; i < n; ++i) {
-    cin >> arr[i];
-    pxor[i + 1] = arr[i] ^ pxor[i];
-  }
-
+  vi arr(n), pref(n + 1, 0);
+  cin >> arr;
+  for (int i = 0; i < n; ++i)
+    pref[i + 1] = pref[i] + arr[i];
   while (q--) {
-    int a, b;
-    cin >> a >> b;
-    int ans = pxor[b] ^ pxor[a - 1];
-    cout << ans << '\n';
+    int l, r;
+    cin >> l >> r;
+    cout << pref[r] - pref[l - 1] << endl;
   }
 }
-
 int32_t main() {
 
   //  freopen("whereami.in", "r", stdin);

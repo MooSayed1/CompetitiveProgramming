@@ -1,10 +1,10 @@
 // ﷽
-// Contest: CSES Problem Set
-// Judge: CSES
-// URL: https://cses.fi/problemset/task/1650
-// Memory Limit: 512
+// Contest: Codeforces Round 1021 (Div. 2)
+// Judge: Codeforces
+// URL: https://codeforces.com/problemset/problem/2098/B
+// Memory Limit: 256
 // Time Limit: 1000
-// Start: Sat 10 May 2025 11:34:11 PM EEST
+// Start: Wed 07 May 2025 08:43:13 PM EEST
 //
 #include <bits/stdc++.h>
 using namespace std;
@@ -43,23 +43,8 @@ ostream &operator<<(ostream &output, const vector<T> &data) {
 }
 
 void solve() {
-  int n, q;
-  cin >> n >> q;
-  vi arr(n), pxor(n + 1, 0);
 
-  for (int i = 0; i < n; ++i) {
-    cin >> arr[i];
-    pxor[i + 1] = arr[i] ^ pxor[i];
-  }
-
-  while (q--) {
-    int a, b;
-    cin >> a >> b;
-    int ans = pxor[b] ^ pxor[a - 1];
-    cout << ans << '\n';
-  }
 }
-
 int32_t main() {
 
   //  freopen("whereami.in", "r", stdin);

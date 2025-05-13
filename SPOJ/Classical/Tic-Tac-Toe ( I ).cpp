@@ -1,10 +1,10 @@
 // ﷽
-// Contest: CSES Problem Set
-// Judge: CSES
-// URL: https://cses.fi/problemset/task/1650
-// Memory Limit: 512
+// Contest: Classical
+// Judge: SPOJ
+// URL: https://www.spoj.com/problems/TOE1/
+// Memory Limit: 1536
 // Time Limit: 1000
-// Start: Sat 10 May 2025 11:34:11 PM EEST
+// Start: Tue 13 May 2025 03:22:38 AM EEST
 //
 #include <bits/stdc++.h>
 using namespace std;
@@ -42,31 +42,17 @@ ostream &operator<<(ostream &output, const vector<T> &data) {
   return output;
 }
 
+
 void solve() {
-  int n, q;
-  cin >> n >> q;
-  vi arr(n), pxor(n + 1, 0);
-
-  for (int i = 0; i < n; ++i) {
-    cin >> arr[i];
-    pxor[i + 1] = arr[i] ^ pxor[i];
-  }
-
-  while (q--) {
-    int a, b;
-    cin >> a >> b;
-    int ans = pxor[b] ^ pxor[a - 1];
-    cout << ans << '\n';
-  }
+  
 }
-
 int32_t main() {
 
   //  freopen("whereami.in", "r", stdin);
   //  freopen("whereami.out", "w", stdout);
   fastio();
   int t = 1;
-  // cin>>t;
+  cin >> t;
   while (t--)
     solve();
   return 0;

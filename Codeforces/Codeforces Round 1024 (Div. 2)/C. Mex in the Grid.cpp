@@ -1,10 +1,10 @@
 // ﷽
-// Contest: CSES Problem Set
-// Judge: CSES
-// URL: https://cses.fi/problemset/task/1650
-// Memory Limit: 512
-// Time Limit: 1000
-// Start: Sat 10 May 2025 11:34:11 PM EEST
+// Contest: Codeforces Round 1024 (Div. 2)
+// Judge: Codeforces
+// URL: https://codeforces.com/contest/2102/problem/C
+// Memory Limit: 256
+// Time Limit: 2000
+// Start: Sun 11 May 2025 06:03:48 PM EEST
 //
 #include <bits/stdc++.h>
 using namespace std;
@@ -26,8 +26,8 @@ using namespace std;
 #define endl "\n"
 #define popCnt(x) (__builtin_popcountll(x))
 const int MOD = 1e9 + 7;
-const int dx[]{0, 1, 0, -1, -1, -1, 1, 1};
-const int dy[]{1, 0, -1, 0, -1, 1, -1, 1};
+int dx[4] = {-1, 0, 1, 0};
+int dy[4] = {0, 1, 0, -1};
 
 template <typename T> istream &operator>>(istream &input, vector<T> &data) {
   for (T &x : data)
@@ -43,30 +43,45 @@ ostream &operator<<(ostream &output, const vector<T> &data) {
 }
 
 void solve() {
-  int n, q;
-  cin >> n >> q;
-  vi arr(n), pxor(n + 1, 0);
+  int n;
+  cin >> n;
+
+  vector<vi> arr(n, vi(n, 0));
+
+  int x = n / 2, y = (n - 1) / 2;
+
+  int val = 0;
+  arr[x][y] = val++;
+
+  int dir = 0;
+  int ln = 1;
+
+  while (val < 1 * n * n) {
+    for (int i = 0; i < 2 && val < 1 * n * n; ++i) {
+      for (int s = 0; s < ln && val < 1 * n * n; ++s) {
+        x += dx[dir];
+        y += dy[dir];
+        arr[x][y] = val++;
+      }
+      dir = (dir + 1) % 4;
+    }
+    ln++;
+  }
 
   for (int i = 0; i < n; ++i) {
-    cin >> arr[i];
-    pxor[i + 1] = arr[i] ^ pxor[i];
-  }
-
-  while (q--) {
-    int a, b;
-    cin >> a >> b;
-    int ans = pxor[b] ^ pxor[a - 1];
-    cout << ans << '\n';
+    for (int j = 0; j < n; ++j) {
+      cout << arr[i][j] << ' ';
+    }
+    cout<<endl;
   }
 }
-
 int32_t main() {
 
   //  freopen("whereami.in", "r", stdin);
   //  freopen("whereami.out", "w", stdout);
   fastio();
   int t = 1;
-  // cin>>t;
+  cin >> t;
   while (t--)
     solve();
   return 0;

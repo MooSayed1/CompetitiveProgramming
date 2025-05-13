@@ -1,10 +1,10 @@
 // ﷽
-// Contest: CSES Problem Set
-// Judge: CSES
-// URL: https://cses.fi/problemset/task/1650
-// Memory Limit: 512
+// Contest: Codeforces Round 218 (Div. 2)
+// Judge: Codeforces
+// URL: https://codeforces.com/contest/371/problem/C
+// Memory Limit: 256
 // Time Limit: 1000
-// Start: Sat 10 May 2025 11:34:11 PM EEST
+// Start: Sat 10 May 2025 07:13:04 PM EEST
 //
 #include <bits/stdc++.h>
 using namespace std;
@@ -41,25 +41,48 @@ ostream &operator<<(ostream &output, const vector<T> &data) {
     output << x << " ";
   return output;
 }
+int cntB, cntS,cntC,m;
+vi ing, costs;
+bool can(int mid) {
+  int bPrice = max(0LL, cntB * mid - ing[0]) * costs[0];//381+
+  int sPrice = max(0LL, cntS * mid - ing[1]) * costs[1];
+  int cPrice = max(0LL, cntC * mid - ing[2]) * costs[2];
 
-void solve() {
-  int n, q;
-  cin >> n >> q;
-  vi arr(n), pxor(n + 1, 0);
-
-  for (int i = 0; i < n; ++i) {
-    cin >> arr[i];
-    pxor[i + 1] = arr[i] ^ pxor[i];
-  }
-
-  while (q--) {
-    int a, b;
-    cin >> a >> b;
-    int ans = pxor[b] ^ pxor[a - 1];
-    cout << ans << '\n';
-  }
+  return bPrice + sPrice + cPrice <= m;
 }
 
+void solve() {
+  string s;
+  cin >> s;
+  for (auto &it : s) {
+    if (it == 'B')
+      cntB++;
+    else if (it == 'S')
+      cntS++;
+    else
+      cntC++;
+  }
+
+  ing.resize(3);
+  cin >> ing;
+  costs.resize(3);
+  cin >> costs;
+  cin >> m;
+  debug(cntB,cntC,cntS);
+  debug(ing);
+  debug(costs);
+
+
+  int l = 0, r = 1e13;
+  while (l <= r) {
+    int mid = (l + r) / 2;
+    if (can(mid)) {
+      l = mid + 1;
+    } else
+      r = mid - 1;
+  }
+  cout << l-1 << endl;
+}
 int32_t main() {
 
   //  freopen("whereami.in", "r", stdin);

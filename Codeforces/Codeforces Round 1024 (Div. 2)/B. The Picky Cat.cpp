@@ -1,10 +1,10 @@
 // ﷽
-// Contest: CSES Problem Set
-// Judge: CSES
-// URL: https://cses.fi/problemset/task/1650
-// Memory Limit: 512
+// Contest: Codeforces Round 1024 (Div. 2)
+// Judge: Codeforces
+// URL: https://codeforces.com/contest/2102/problem/B
+// Memory Limit: 256
 // Time Limit: 1000
-// Start: Sat 10 May 2025 11:34:11 PM EEST
+// Start: Sun 11 May 2025 05:48:57 PM EEST
 //
 #include <bits/stdc++.h>
 using namespace std;
@@ -43,30 +43,37 @@ ostream &operator<<(ostream &output, const vector<T> &data) {
 }
 
 void solve() {
-  int n, q;
-  cin >> n >> q;
-  vi arr(n), pxor(n + 1, 0);
+  int n;cin>>n;
+  vi a(n);cin >> a;
 
-  for (int i = 0; i < n; ++i) {
-    cin >> arr[i];
-    pxor[i + 1] = arr[i] ^ pxor[i];
+  if (n == 1) {
+    cout << "YES\n";
+    return;
   }
 
-  while (q--) {
-    int a, b;
-    cin >> a >> b;
-    int ans = pxor[b] ^ pxor[a - 1];
-    cout << ans << '\n';
+  int cnt1 = 0, cnt2 = 0;
+  for (int i = 1; i < n; i++) {
+    if (abs(a[i]) <= abs(a[0]))
+      cnt1++;
+    else cnt2++;
+    ;
   }
+
+  int k = (n + 1) / 2;
+  int k1 = k - 1;
+
+  if (cnt1 <= k1 || cnt2 >= k1)
+    cout << "YES\n";
+  else
+    cout << "NO\n";
 }
-
 int32_t main() {
 
   //  freopen("whereami.in", "r", stdin);
   //  freopen("whereami.out", "w", stdout);
   fastio();
   int t = 1;
-  // cin>>t;
+  cin >> t;
   while (t--)
     solve();
   return 0;

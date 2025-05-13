@@ -1,10 +1,10 @@
 // ﷽
 // Contest: CSES Problem Set
 // Judge: CSES
-// URL: https://cses.fi/problemset/task/1650
+// URL: https://cses.fi/problemset/task/1648/
 // Memory Limit: 512
 // Time Limit: 1000
-// Start: Sat 10 May 2025 11:34:11 PM EEST
+// Start: Sat 10 May 2025 11:01:49 PM EEST
 //
 #include <bits/stdc++.h>
 using namespace std;
@@ -42,24 +42,62 @@ ostream &operator<<(ostream &output, const vector<T> &data) {
   return output;
 }
 
-void solve() {
-  int n, q;
-  cin >> n >> q;
-  vi arr(n), pxor(n + 1, 0);
+int n, q, SQ;
+vi arr, blkSum;
+// vi blks;
 
+void preProcess() {
   for (int i = 0; i < n; ++i) {
-    cin >> arr[i];
-    pxor[i + 1] = arr[i] ^ pxor[i];
-  }
-
-  while (q--) {
-    int a, b;
-    cin >> a >> b;
-    int ans = pxor[b] ^ pxor[a - 1];
-    cout << ans << '\n';
+    // blks[i / SQ] = arr[i];
+    blkSum[i / SQ] += arr[i];
   }
 }
 
+int query(int l, int r) {
+  int ans = 0;
+  while (l <= r) {
+    if (l % SQ == 0 && l + SQ <= r) {
+      ans += blkSum[l/SQ];
+      l += SQ;
+    } else {
+      ans += arr[l];
+      l++;
+    }
+  }
+  return ans;
+}
+
+void update(int inx, int val) {
+  int blkNum = inx / SQ;
+  blkSum[blkNum] -= arr[inx];
+  arr[inx] = val;
+  blkSum[blkNum] += val;
+}
+
+void solve() {
+  cin >> n >> q;
+  arr.resize(n);
+  cin >> arr;
+  SQ = ceil(sqrt(n));
+  blkSum.assign(SQ, 0);
+  // blks.resize(n + 1);
+  preProcess();
+
+  while (q--) {
+    int op;
+    cin >> op;
+    if (op & 1) {
+      int pos, val;
+      cin >> pos >> val;
+      update(pos - 1, val);
+    } else {
+      int l, r;
+      cin >> l >> r;
+      --l, --r;
+      cout << query(l, r) << endl;
+    }
+  }
+}
 int32_t main() {
 
   //  freopen("whereami.in", "r", stdin);

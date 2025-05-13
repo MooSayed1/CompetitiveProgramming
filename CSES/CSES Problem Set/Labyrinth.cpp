@@ -1,10 +1,10 @@
 // ﷽
 // Contest: CSES Problem Set
 // Judge: CSES
-// URL: https://cses.fi/problemset/task/1192/
+// URL: https://cses.fi/problemset/task/1193/
 // Memory Limit: 512
 // Time Limit: 1000
-// Start: Wed 03 Jul 2024 09:41:08 PM EEST
+// Start: Tue 13 May 2025 10:53:37 PM EEST
 //
 #include <bits/stdc++.h>
 using namespace std;
@@ -19,20 +19,16 @@ using namespace std;
   ios_base::sync_with_stdio(false);                                            \
   cin.tie(NULL);
 
-#define ll long long
+#define int long long
 #define all(a) (a).begin(), (a).end()
-#define sz(a) (int)(a).size()
-#define pb push_back
-#define yes cout << "YES\n"
-#define no cout << "NO\n"
-#define vll vector<ll>
 #define vi vector<int>
-#define pii pair<int,int>
 #define OO 2e9
 #define endl "\n"
-const int dx[]{1, 0, -1, 0};
-const int dy[]{0, 1, 0, -1};
-const char dir[] = {'D', 'R', 'U', 'L'};
+#define popCnt(x) (__builtin_popcountll(x))
+const int MOD = 1e9 + 7;
+// R  D  L  U
+const int dx[]{0, 1, 0, -1};
+const int dy[]{1, 0, -1, 0};
 
 template <typename T> istream &operator>>(istream &input, vector<T> &data) {
   for (T &x : data)
@@ -46,75 +42,79 @@ ostream &operator<<(ostream &output, const vector<T> &data) {
     output << x << " ";
   return output;
 }
-// 48-57 -> 0-9  65-90 -> A-Z 97-122 -> a-z
-
-struct Point {
-    int x, y;
-    int dist;
-    vector<char> path;
-};
-
-bool isValid(int x, int y, int n, int m, vector<vector<char>>& grid, vector<vector<bool>>& visited) {
-    return x >= 0 && x < n && y >= 0 && y < m && grid[x][y] != '#' && !visited[x][y];
-}
 
 void solve() {
-    int n, m;
-    cin >> n >> m;
-
-    vector<vector<char>> grid(n, vector<char>(m));
-    vector<vector<bool>> visited(n, vector<bool>(m, false));
-
-    Point start, end;
-
-    for (int i = 0; i < n; ++i) {
-        for (int j = 0; j < m; ++j) {
-            cin >> grid[i][j];
-            if (grid[i][j] == 'A') {
-                start = {i, j, 0, {}};
-            }
-            if (grid[i][j] == 'B') {
-                end = {i, j, 0, {}};
-            }
-        }
+  int n, m;
+  cin >> n >> m;
+  vector<vector<char>> arr(n, vector<char>(m));
+  pair<int, int> start;
+  pair<int, int> end;
+  for (int i = 0; i < n; ++i) {
+    for (int j = 0; j < m; ++j) {
+      cin >> arr[i][j];
+      if (arr[i][j] == 'A')
+        start.first = i, start.second = j;
+      if (arr[i][j] == 'B')
+        end.first = i, end.second = j;
     }
+  }
 
-    queue<Point> q;
-    q.push(start);
-    visited[start.x][start.y] = true;
+  queue<pair<int, int>> q;
+  vector<vector<int>> dist(n, vector<int>(m, 0));
+  vector<vector<pair<int, int>>> p(n, vector<pair<int, int>>(m, {-1, -1}));
+  string path;
+  q.push(start);
 
-    while (!q.empty()) {
-        Point curr = q.front();
-        q.pop();
-
-        if (curr.x == end.x && curr.y == end.y) {
-            yes;
-            cout << curr.dist << "\n";
-            for (char c : curr.path) cout << c;
-            cout << "\n";
-            return;
-        }
-
-        for (int i = 0; i < 4; ++i) {
-            int nx = curr.x + dx[i];
-            int ny = curr.y + dy[i];
-
-            if (isValid(nx, ny, n, m, grid, visited)) {
-                visited[nx][ny] = true;
-                vector<char> newPath = curr.path;
-                newPath.push_back(dir[i]);
-                q.push({nx, ny, curr.dist + 1, newPath});
-            }
-        }
+  bool f = 0;
+  while (!q.empty()) {
+    pair<int, int> cur = q.front();
+    q.pop();
+    for (int i = 0; i < 4; ++i) {
+      int ni = cur.first + dx[i];
+      int nj = cur.second + dy[i];
+      pair<int, int> np = {ni, nj};
+      if (ni < 0 || ni > n - 1 || nj < 0 || nj > m - 1 || arr[ni][nj] == '#' ||
+          dist[ni][nj])
+        continue;
+      dist[ni][nj] = dist[cur.first][cur.second] + 1;
+      p[ni][nj] = cur;
+      q.push(np);
+      if (np == end) {
+        f = 1, cout << "YES\n" << dist[np.first][np.second] << endl;
+        break;
+      }
     }
+  }
 
-    no;
+  if (f) {
+    pair<int, int> d = end;
+    while (d != start) {
+      int x = d.first - p[d.first][d.second].first;
+      int y = d.second - p[d.first][d.second].second;
+      if (x < 0)
+        path.push_back('U');
+      else if (x > 0)
+        path.push_back('D');
+      if (y > 0)
+        path.push_back('R');
+      if (y < 0)
+        path.push_back('L');
+      d = p[d.first][d.second];
+    }
+    reverse(all(path));
+    cout << path << endl;
+  } else {
+    cout << "NO\n";
+  }
 }
-
 int32_t main() {
-    fastio();
-    int t = 1;
-    // cin >> t;
-    while (t--) solve();
-    return 0;
+
+  //  freopen("whereami.in", "r", stdin);
+  //  freopen("whereami.out", "w", stdout);
+  fastio();
+  int t = 1;
+  // cin>>t;
+  while (t--)
+    solve();
+  return 0;
 }

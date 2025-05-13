@@ -1,10 +1,10 @@
 // ﷽
-// Contest: CSES Problem Set
-// Judge: CSES
-// URL: https://cses.fi/problemset/task/1650
-// Memory Limit: 512
-// Time Limit: 1000
-// Start: Sat 10 May 2025 11:34:11 PM EEST
+// Contest: Educational Codeforces Round 12
+// Judge: Codeforces
+// URL: https://codeforces.com/problemset/problem/665/C
+// Memory Limit: 256
+// Time Limit: 2000
+// Start: Sat 10 May 2025 05:55:23 AM EEST
 //
 #include <bits/stdc++.h>
 using namespace std;
@@ -43,23 +43,34 @@ ostream &operator<<(ostream &output, const vector<T> &data) {
 }
 
 void solve() {
-  int n, q;
-  cin >> n >> q;
-  vi arr(n), pxor(n + 1, 0);
-
-  for (int i = 0; i < n; ++i) {
-    cin >> arr[i];
-    pxor[i + 1] = arr[i] ^ pxor[i];
+  string s;
+  cin >> s;
+  int n = s.size();
+  for (int i = 0; i < n - 1; ++i) {
+    if (s[i] == s[i + 1]) {
+      if (s[i] == 'z') {
+        if (i + 2 < n) {
+          if (s[i + 2] == (char)(s[i] - 1)) {
+            s[i + 1] = s[i] - 2;
+            continue;
+          }
+        }
+        s[i + 1] = (char)('z' - 1);
+        continue;
+      }
+      if (i + 2 < n) {
+        if (char(s[i] + 1) == s[i + 2]) {
+          if(s[i]+2>'z'){s[i+1]='a';continue;}
+          s[i + 1] = (char)(s[i] + 2);
+          continue;
+        }
+      }
+      s[i + 1] = (char)(s[i] + 1);
+    }
   }
 
-  while (q--) {
-    int a, b;
-    cin >> a >> b;
-    int ans = pxor[b] ^ pxor[a - 1];
-    cout << ans << '\n';
-  }
+  cout << s << endl;
 }
-
 int32_t main() {
 
   //  freopen("whereami.in", "r", stdin);

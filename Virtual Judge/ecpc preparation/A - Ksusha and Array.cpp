@@ -1,10 +1,10 @@
 // ﷽
-// Contest: CSES Problem Set
-// Judge: CSES
-// URL: https://cses.fi/problemset/task/1650
-// Memory Limit: 512
-// Time Limit: 1000
-// Start: Sat 10 May 2025 11:34:11 PM EEST
+// Contest: ecpc preparation
+// Judge: Virtual Judge
+// URL: https://vjudge.net/contest/715915#problem/A
+// Memory Limit: 256
+// Time Limit: 2000
+// Start: Sat 10 May 2025 04:58:46 AM EEST
 //
 #include <bits/stdc++.h>
 using namespace std;
@@ -43,23 +43,28 @@ ostream &operator<<(ostream &output, const vector<T> &data) {
 }
 
 void solve() {
-  int n, q;
-  cin >> n >> q;
-  vi arr(n), pxor(n + 1, 0);
-
-  for (int i = 0; i < n; ++i) {
-    cin >> arr[i];
-    pxor[i + 1] = arr[i] ^ pxor[i];
+  int n;cin>>n;
+  vi arr(n);cin>>arr;
+  bool f=0;
+  int ans=arr[0];
+  if(arr[0]==1)f=1;
+  for(int i=1;i<n;++i){
+    ans=gcd(arr[i],ans);
+    if(arr[i]==1)f=1;
   }
-
-  while (q--) {
-    int a, b;
-    cin >> a >> b;
-    int ans = pxor[b] ^ pxor[a - 1];
-    cout << ans << '\n';
+  if(ans==1){
+    if(f)cout<<1<<endl;
+    else cout<<-1<<endl;
+  }else{
+    f=0;
+    for(auto&it:arr){
+      if(it==ans){
+        cout<<ans<<endl;return;
+      }
+    }
+    cout<<-1<<endl;
   }
 }
-
 int32_t main() {
 
   //  freopen("whereami.in", "r", stdin);

@@ -1,10 +1,10 @@
 // ﷽
-// Contest: CSES Problem Set
-// Judge: CSES
-// URL: https://cses.fi/problemset/task/1650
-// Memory Limit: 512
-// Time Limit: 1000
-// Start: Sat 10 May 2025 11:34:11 PM EEST
+// Contest: ECPC Qualifications 2021 - Day 4
+// Judge: Codeforces
+// URL: https://codeforces.com/group/Rilx5irOux/contest/605910/problem/D
+// Memory Limit: 256
+// Time Limit: 2000
+// Start: Fri 09 May 2025 05:44:29 PM EEST
 //
 #include <bits/stdc++.h>
 using namespace std;
@@ -42,31 +42,51 @@ ostream &operator<<(ostream &output, const vector<T> &data) {
   return output;
 }
 
+struct item {
+  int x=0, t=0,v=0;
+};
+
 void solve() {
-  int n, q;
-  cin >> n >> q;
-  vi arr(n), pxor(n + 1, 0);
+  int n;
+  cin >> n;
+  vector<item> arr(n);
+  for (int i = 0; i < n; i++) {
+    int x, c, vv;
+    cin >> x >> c >> vv;
+    arr[i] = {x, c, vv};
+  }
+  sort(all(arr), [](auto &x, auto &y) { return x.t < y.t; });
+  vi memo(n, -1);
 
-  for (int i = 0; i < n; ++i) {
-    cin >> arr[i];
-    pxor[i + 1] = arr[i] ^ pxor[i];
+  auto go = [&](auto &go, int i) -> int {
+    if (memo[i] != -1)
+      return memo[i];
+
+    int res = arr[i].v;
+
+    for (int j = 0; j < i; j++) {
+      if (arr[i].t - arr[j].t >= abs(arr[i].x - arr[j].x)) {
+        res = max(res, go(go, j) + arr[i].v);
+      }
+    }
+    return memo[i] = res;
+  };
+
+  int ans = 0;
+  // ans = go(go,0);
+  for (int i = 0; i < n; i++) {
+    ans = max(ans, go(go, i));
   }
 
-  while (q--) {
-    int a, b;
-    cin >> a >> b;
-    int ans = pxor[b] ^ pxor[a - 1];
-    cout << ans << '\n';
-  }
+  cout << ans << "\n";
 }
-
 int32_t main() {
 
-  //  freopen("whereami.in", "r", stdin);
+   freopen("collector.in", "r", stdin);
   //  freopen("whereami.out", "w", stdout);
   fastio();
   int t = 1;
-  // cin>>t;
+  cin >> t;
   while (t--)
     solve();
   return 0;

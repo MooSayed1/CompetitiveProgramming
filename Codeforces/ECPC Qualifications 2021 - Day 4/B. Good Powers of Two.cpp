@@ -1,10 +1,10 @@
 // ﷽
-// Contest: CSES Problem Set
-// Judge: CSES
-// URL: https://cses.fi/problemset/task/1650
-// Memory Limit: 512
-// Time Limit: 1000
-// Start: Sat 10 May 2025 11:34:11 PM EEST
+// Contest: ECPC Qualifications 2021 - Day 4
+// Judge: Codeforces
+// URL: https://codeforces.com/group/Rilx5irOux/contest/605910/problem/B
+// Memory Limit: 256
+// Time Limit: 2000
+// Start: Fri 09 May 2025 05:15:05 PM EEST
 //
 #include <bits/stdc++.h>
 using namespace std;
@@ -43,30 +43,22 @@ ostream &operator<<(ostream &output, const vector<T> &data) {
 }
 
 void solve() {
-  int n, q;
-  cin >> n >> q;
-  vi arr(n), pxor(n + 1, 0);
-
-  for (int i = 0; i < n; ++i) {
-    cin >> arr[i];
-    pxor[i + 1] = arr[i] ^ pxor[i];
+  int n;cin>>n;
+  bitset<64>bt =n;
+  int ans=0;
+  for(int i=0;i<64;++i){
+    if(bt[i]&&i&1^1)
+      ans++;
   }
-
-  while (q--) {
-    int a, b;
-    cin >> a >> b;
-    int ans = pxor[b] ^ pxor[a - 1];
-    cout << ans << '\n';
-  }
+  cout<<ans<<endl;
 }
-
 int32_t main() {
 
-  //  freopen("whereami.in", "r", stdin);
+   // freopen("even.in", "r", stdin);
   //  freopen("whereami.out", "w", stdout);
   fastio();
   int t = 1;
-  // cin>>t;
+  cin>>t;
   while (t--)
     solve();
   return 0;

@@ -1,10 +1,10 @@
 // ﷽
-// Contest: CSES Problem Set
-// Judge: CSES
-// URL: https://cses.fi/problemset/task/1650
-// Memory Limit: 512
+// Contest: SPOJ
+// Judge: Virtual Judge
+// URL: https://vjudge.net/problem/SPOJ-KQUERY
+// Memory Limit: 1536
 // Time Limit: 1000
-// Start: Sat 10 May 2025 11:34:11 PM EEST
+// Start: Mon 12 May 2025 06:59:32 AM EEST
 //
 #include <bits/stdc++.h>
 using namespace std;
@@ -42,24 +42,53 @@ ostream &operator<<(ostream &output, const vector<T> &data) {
   return output;
 }
 
+vi arr;
+struct SqrtD {
+  vector<vi> blks;
+  int sq = 0;
+  SqrtD(vi &arr, int n) {
+    sq = ceil(sqrt(n));
+    blks.resize((n + sq - 1) / sq);
+
+    for (int i = 0; i < n; ++i) {
+      int blkNum = i / sq;
+      blks[blkNum].push_back(arr[i]);
+    }
+    for (auto &it : blks) {
+      sort(all(it));
+    }
+  }
+  int query(int l, int r, int val) {
+    int ans = 0;
+    while (l <= r) {
+      int blkNum = l / sq;
+      if (l % sq == 0 && l + sq <= r) {
+        auto it = upper_bound(all(blks[blkNum]), val);
+        // if (it != blks[blkNum].end())
+        ans += blks[blkNum].end() - it;
+        l += sq;
+      } else {
+        ans += (arr[l] > val);
+        ++l;
+      }
+    }
+    return ans;
+  }
+};
+
 void solve() {
   int n, q;
-  cin >> n >> q;
-  vi arr(n), pxor(n + 1, 0);
-
-  for (int i = 0; i < n; ++i) {
-    cin >> arr[i];
-    pxor[i + 1] = arr[i] ^ pxor[i];
-  }
-
+  cin >> n;
+  arr.resize(n);
+  cin >> arr;
+  cin >> q;
+  SqrtD sqt(arr, n);
   while (q--) {
-    int a, b;
-    cin >> a >> b;
-    int ans = pxor[b] ^ pxor[a - 1];
-    cout << ans << '\n';
+    int l, r, x;
+    cin >> l >> r >> x;
+    cout << sqt.query(--l, --r, x) << endl;
   }
 }
-
 int32_t main() {
 
   //  freopen("whereami.in", "r", stdin);

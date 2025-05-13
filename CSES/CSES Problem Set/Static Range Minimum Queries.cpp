@@ -1,10 +1,10 @@
 // ﷽
 // Contest: CSES Problem Set
 // Judge: CSES
-// URL: https://cses.fi/problemset/task/1650
+// URL: https://cses.fi/problemset/task/1647
 // Memory Limit: 512
 // Time Limit: 1000
-// Start: Sat 10 May 2025 11:34:11 PM EEST
+// Start: Sat 10 May 2025 10:24:15 PM EEST
 //
 #include <bits/stdc++.h>
 using namespace std;
@@ -42,24 +42,45 @@ ostream &operator<<(ostream &output, const vector<T> &data) {
   return output;
 }
 
-void solve() {
-  int n, q;
-  cin >> n >> q;
-  vi arr(n), pxor(n + 1, 0);
+int n, q, SQ;
+vi arr, blkMin;
+// vi blks;
 
+void preProcess() {
   for (int i = 0; i < n; ++i) {
-    cin >> arr[i];
-    pxor[i + 1] = arr[i] ^ pxor[i];
-  }
-
-  while (q--) {
-    int a, b;
-    cin >> a >> b;
-    int ans = pxor[b] ^ pxor[a - 1];
-    cout << ans << '\n';
+    // blks[i / SQ] = arr[i];
+    blkMin[i/SQ]=min(blkMin[i/SQ],arr[i]);
   }
 }
 
+int query(int l,int r){
+  int ans=LLONG_MAX;
+  while(l<=r){
+    if(l%SQ==0&&l+SQ<=r){
+      ans=min(blkMin[l/SQ],ans);
+      l+=SQ;
+    }else{
+      ans=min(ans,arr[l]);
+      l++;
+    }
+  }
+  return ans;
+}
+
+void solve() {
+  cin >> n >> q;
+  arr.resize(n);
+  cin >> arr;
+  SQ = ceil(sqrt(n));
+  blkMin.assign(SQ,LLONG_MAX);
+  // blks.resize(n + 1);
+  preProcess();
+
+  while(q--){
+    int l,r;cin>>l>>r;--l,--r;
+    cout << query(l,r) << endl;
+  }
+}
 int32_t main() {
 
   //  freopen("whereami.in", "r", stdin);
